@@ -1,0 +1,7 @@
+.idea
+*.aux
+*.log
+*.gz
+*.toc
+*.out
+data/images/*.jpg

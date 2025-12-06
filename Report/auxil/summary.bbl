@@ -1,0 +1,29 @@
+\begin{thebibliography}{1}
+
+\bibitem{groundfish}
+Government of~Canada.
+\newblock Nafo division 4t groundfish research vessel trawl survey (september
+  survey) dataset.
+\newblock
+  \url{https://open.canada.ca/data/en/dataset/1989de32-bc5d-c696-879c-54d422438e64},
+  2024.
+\newblock Accessed on 2024-04-13.
+
+\bibitem{ns_strait}
+Government of~Canada.
+\newblock Northumberland strait multi-species trawl survey data.
+\newblock
+  \url{https://open.canada.ca/data/en/dataset/6d61f7b4-39eb-c8a9-a71c-b65d2eca8660},
+  2024.
+\newblock Accessed on 2024-12-08.
+
+\bibitem{ogp_plaice}
+Government of~Canada.
+\newblock Otolith collection of american plaice in the southern gulf of st.
+  lawrence.
+\newblock
+  \url{https://open.canada.ca/data/en/dataset/c1c739ee-a0ae-0e14-9c11-8568b75169b9},
+  2024.
+\newblock Accessed on 2024-12-08.
+
+\end{thebibliography}
