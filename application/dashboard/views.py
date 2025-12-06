@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
 
-from application.dashboard.utils import parse_911_csv
+from dashboard.utils import parse_911_csv
 
 
 # Create your views here.
