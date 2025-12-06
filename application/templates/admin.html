@@ -5,3 +5,40 @@
     Site Administration Page
   </div>
 {% endblock %}
+
+
+{% block body %}
+
+  <div class="mb-3">
+    <ul>
+      <li>
+        In a perfect world, this dashboard would involve a component that independently updates the database from a primary source at regular intervals.
+        For example, one can imagine a cron job or a celery task that runs every 5 minutes and updates the database by requesting the latest data directly
+        from the emergency response systems' APIs.
+      </li>
+      <li>
+        However, for the sake of demonstration, this page will serve as a landing for site administrators, allowing them to update the database from a CSV file.
+      </li>
+      <li>
+        We will assume the CSVs are all formatted in the same schema as the source dataset used for this project.
+      </li>
+      <li>
+        This dataset can be downloaded <a href="https://www.kaggle.com/datasets/mchirico/montcoalert?resource=download&select=911.csv">HERE</a>
+        and in turn uploaded into this application.
+      </li>
+    </ul>
+  </div>
+
+  <form METHOD="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form }}
+    </div>
+
+
+    <input type="submit" class="btn btn-warning">
+  </form>
+
+
+{% endblock %}
