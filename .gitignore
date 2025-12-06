@@ -1,4 +1,5 @@
 .idea
+.venv
 *.aux
 *.log
 *.gz
