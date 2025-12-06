@@ -23,7 +23,6 @@ class CSVParser:
             if txt[-1] == "-":
                 txt = txt[:-1].strip()
             return txt
-
         self.df["category"] = self.df["title"].apply(_clean_title_)
 
         # clean description and parse out station name
@@ -34,10 +33,9 @@ class CSVParser:
             for item in desc.split(";"):
                 if "station" in item and not re.search(r"station [ave|cr|dr|square|blvd|park|way|fire]", item) and re.search(r"station\s", item):
                     txt = item.replace("station", "").strip()
-                    return txt if txt else "unknown"
+                    return str(txt).upper() if txt else "unknown"
             return "unknown"
-
-        self.df["station"] = self.df["desc"].apply(_clean_station_).value_counts()
+        self.df["station"] = self.df["desc"].apply(_clean_station_)
 
     def add_townships(self):
         create_list = list()
@@ -77,9 +75,8 @@ class CSVParser:
     def add_units(self):
         create_list = list()
         for station, type_id in self.df.loc[:, ["station", "type_id"]].value_counts().index:
-            print(station, type_id)
             create_list.append(models.ResponseUnit(response_type_id=type_id, station_name=station))
-        x = models.ResponseUnit.objects.bulk_create(create_list)
+        x = models.ResponseUnit.objects.bulk_create(create_list, ignore_conflicts=True)
         runit_lookup = {f"{item.response_type_id}-{item.station_name}": item.id for item in models.ResponseUnit.objects.all()}
         # add back to df
         self.df["unit"] = self.df.apply(lambda x: f"{int(x.type_id)}-{x.station}", axis=1)
@@ -87,6 +84,7 @@ class CSVParser:
         messages.success(self.request, f"Added {len(x)} response units.")
 
     def add_calls(self):
+        models.EmergencyCall.objects.all().delete()
         self.df.replace(np.nan, None, inplace=True)
         create_list = list()
         def _make_call_from_row_(row):
@@ -106,10 +104,10 @@ class CSVParser:
         messages.success(self.request, f"Added {len(x)} emergency calls.")
 
     def parse(self):
-        self.clean_df()
         connection.ensure_connection()
+        self.clean_df()
         self.add_townships()
         self.add_response_types()
         self.add_categories()
         self.add_units()
-        # self.add_calls()
+        self.add_calls()

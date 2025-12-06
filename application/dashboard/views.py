@@ -15,8 +15,19 @@ class IndexView(TemplateView):
 
 
 # Create your views here.
-class DashboardView(TemplateView):
-    template_name = 'dashboard.html'
+class MapView(TemplateView):
+    template_name = 'map.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["show_back"] = True
+        context["calls"] = [dict(lat=item.latitude, lng=item.longitude) for item in models.EmergencyCall.objects.all()[:1000]]
+        return context
+
+
+# Create your views here.
+class ChartsView(TemplateView):
+    template_name = 'charts.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

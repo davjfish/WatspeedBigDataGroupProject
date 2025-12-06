@@ -21,5 +21,6 @@ from dashboard import views
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('admin/', views.AdminView.as_view(), name='admin'),
-    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
+    path('map/', views.MapView.as_view(), name='map'),
+    path('summary/', views.ChartsView.as_view(), name='charts'),
 ]
