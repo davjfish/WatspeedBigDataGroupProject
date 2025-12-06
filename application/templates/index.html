@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <div class="mb-5 h1 bg-primary text-white p-3">
+    Welcome to the Emergency Response Dashboard
+  </div>
+  <div class="mb-5">
+    <h3>Please choose where you want to go:</h3>
+    <ul>
+      <li><a href="{% url 'admin' %}">Admin Page</a></li>
+      <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+    </ul>
+  </div>
+
+  <div class="alert alert-secondary mb-5">
+    <small>Data source: <a href="https://www.kaggle.com/datasets/mchirico/montcoalert?resource=download&select=911.csv">https://www.kaggle.com/datasets/mchirico/montcoalert?resource=download&select=911.csv</a></small>
+  </div>
+
+
+{% endblock %}
