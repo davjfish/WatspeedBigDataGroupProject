@@ -21,7 +21,7 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["show_back"] = True
-        context["areas"] = models.AdministrativeArea.objects.all()
+        context["areas"] = models.Township.objects.all()
         return context
 
 
