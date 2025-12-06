@@ -13,24 +13,25 @@ class Township(models.Model):
         return f"{self.name}, {self.state} "
 
 
-class ResponderType(models.Model):
-    name = models.CharField(max_length=255)
+class ResponseType(models.Model):
+    name = models.CharField(max_length=255, unique=True)
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
 
 
 class ResponseUnit(models.Model):
-    responder_type = models.ForeignKey(ResponderType, on_delete=models.CASCADE)
+    response_type = models.ForeignKey(ResponseType, on_delete=models.CASCADE)
     station_name = models.CharField(max_length=255)
 
     class Meta:
-        unique_together = ('responder_type', 'station_name')
-        ordering = ('responder_type', "station_name")
+        unique_together = ('response_type', 'station_name')
+        ordering = ('response_type', "station_name")
 
 
 class EmergencyCall(models.Model):
+
     datetime = models.DateTimeField()
     response_unit = models.ForeignKey(ResponseUnit, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
