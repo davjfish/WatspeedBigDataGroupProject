@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
 
-from dashboard.utils import parse_911_csv
+from dashboard.utils import CSVParser
 
 from dashboard import models
 
@@ -47,6 +47,7 @@ class AdminView(FormView):
     def form_valid(self, form):
         temp_file = form.files['temp_file']
         temp_file.seek(0)
-        x = parse_911_csv(temp_file)
-        messages.success(self.request, "File successfully uploaded.")
+        parser = CSVParser(file=temp_file, request=self.request)
+        parser.parse()
+        # messages.success(self.request, "File successfully uploaded.")
         return super().form_valid(form)

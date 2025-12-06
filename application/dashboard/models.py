@@ -9,6 +9,10 @@ class AdministrativeArea(models.Model):
         unique_together = ('name', 'zip_code')
         ordering = ('zip_code', "name")
 
+
+    def __str__(self):
+        return f"{self.zip_code} {self.name}"
+
 class ResponderType(models.Model):
     name = models.CharField(max_length=255)
 
@@ -16,6 +20,10 @@ class ResponderType(models.Model):
 class ResponseUnit(models.Model):
     responder_type = models.ForeignKey(ResponderType, on_delete=models.CASCADE)
     station_name = models.CharField(max_length=255)
+
+    class Meta:
+        unique_together = ('responder_type', 'station_name')
+        ordering = ('responder_type', "station_name")
 
 
 class Category(models.Model):
