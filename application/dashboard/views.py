@@ -6,6 +6,8 @@ from django.views.generic import TemplateView, FormView
 
 from dashboard.utils import parse_911_csv
 
+from dashboard import models
+
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -19,6 +21,7 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["show_back"] = True
+        context["areas"] = models.AdministrativeArea.objects.all()
         return context
 
 

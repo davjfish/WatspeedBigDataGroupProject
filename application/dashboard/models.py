@@ -3,8 +3,11 @@ from django.db import models
 
 class AdministrativeArea(models.Model):
     name = models.CharField(max_length=255)
-    zip_code = models.IntegerField()
+    zip_code = models.IntegerField(blank=True, null=True)
 
+    class Meta:
+        unique_together = ('name', 'zip_code')
+        ordering = ('zip_code', "name")
 
 class ResponderType(models.Model):
     name = models.CharField(max_length=255)
