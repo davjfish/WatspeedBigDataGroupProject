@@ -37,7 +37,7 @@ class FileImportForm(forms.Form):
 class AdminView(FormView):
     template_name = 'admin.html'
     form_class = FileImportForm
-    success_url = reverse_lazy("dashboard")
+    success_url = reverse_lazy("admin")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

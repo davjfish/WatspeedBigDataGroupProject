@@ -1,5 +1,6 @@
 import re
 
+import numpy as np
 import pandas as pd
 from django.contrib import messages
 
@@ -23,7 +24,7 @@ class CSVParser:
                 txt = txt[:-1].strip()
             return txt
 
-        self.df["clean_title"] = self.df["title"].apply(_clean_title_)
+        self.df["category"] = self.df["title"].apply(_clean_title_)
 
         # clean description and parse out station name
         def _clean_station_(x):
@@ -38,22 +39,77 @@ class CSVParser:
 
         self.df["station"] = self.df["desc"].apply(_clean_station_).value_counts()
 
-    def add_administrative_areas(self):
-        # import administrative areas
-        areas = self.df.loc[:, ["zip", "twp"]].value_counts()
+    def add_townships(self):
         create_list = list()
-        for zip_code, name in areas.index:
-            name = name.upper()
-            try:
-                zip_code = int(zip_code)
-            except:
-                zip_code = None
-            area = models.AdministrativeArea(name=name, zip_code=zip_code)
-            create_list.append(area)
-        x = models.AdministrativeArea.objects.bulk_create(create_list, ignore_conflicts=True)
+        for item in self.df.twp.dropna().unique():
+            name = item.upper()
+            create_list.append(models.Township(name=name, state="PA"))
+        x = models.Township.objects.bulk_create(create_list, ignore_conflicts=True)
+
+        # create a lookup
+        twp_lookup = {f"{item.name}": item.id for item in models.Township.objects.all()}
+        # add back to df
+        self.df["twp_id"] = self.df.twp.map(twp_lookup)
         messages.success(self.request, f"Added {len(x)} administrative areas.")
+
+    def add_response_types(self):
+        create_list = list()
+        for name in self.df.type.dropna().unique():
+            create_list.append(models.ResponseType(name=name))
+        x = models.ResponseType.objects.bulk_create(create_list, ignore_conflicts=True)
+
+        rtype_lookup = {f"{item.name}": item.id for item in models.ResponseType.objects.all()}
+        # add back to df
+        self.df["type_id"] = self.df.type.map(rtype_lookup)
+        messages.success(self.request, f"Added {len(x)} response types.")
+
+    def add_categories(self):
+        create_list = list()
+        for name in self.df.category.dropna().unique():
+            create_list.append(models.Category(name=name))
+        x = models.Category.objects.bulk_create(create_list, ignore_conflicts=True)
+
+        cat_lookup = {f"{item.name}": item.id for item in models.Category.objects.all()}
+        # add back to df
+        self.df["category_id"] = self.df.category.map(cat_lookup)
+        messages.success(self.request, f"Added {len(x)} response types.")
+
+    def add_units(self):
+        create_list = list()
+        for station, type_id in self.df.loc[:, ["station", "type_id"]].value_counts().index:
+            print(station, type_id)
+            create_list.append(models.ResponseUnit(response_type_id=type_id, station_name=station))
+        x = models.ResponseUnit.objects.bulk_create(create_list)
+        runit_lookup = {f"{item.response_type_id}-{item.station_name}": item.id for item in models.ResponseUnit.objects.all()}
+        # add back to df
+        self.df["unit"] = self.df.apply(lambda x: f"{int(x.type_id)}-{x.station}", axis=1)
+        self.df["unit_id"] = self.df.unit.map(runit_lookup)
+        messages.success(self.request, f"Added {len(x)} response units.")
+
+    def add_calls(self):
+        self.df.replace(np.nan, None, inplace=True)
+        create_list = list()
+        def _make_call_from_row_(row):
+            kwargs = {
+                "datetime": row.timeStamp,
+                "response_unit_id": row.unit_id,
+                "category_id": row.category_id,
+                "township_id": row.twp_id,
+                "zip_code": row.zip,
+                "address": row.addr,
+                "latitude": row.lat,
+                "longitude": row.lng,
+            }
+            create_list.append(models.EmergencyCall(**kwargs))
+        self.df.apply(_make_call_from_row_, axis=1)
+        x = models.EmergencyCall.objects.bulk_create(create_list)
+        messages.success(self.request, f"Added {len(x)} emergency calls.")
 
     def parse(self):
         self.clean_df()
         connection.ensure_connection()
-        self.add_administrative_areas()
+        self.add_townships()
+        self.add_response_types()
+        self.add_categories()
+        self.add_units()
+        # self.add_calls()
