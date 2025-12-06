@@ -21,5 +21,5 @@ from dashboard import views
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('admin/', views.AdminView.as_view(), name='admin'),
-    path('admin/', views.AdminView.as_view(), name='dashboard'),
+    path('dashboard/', views.DashboardView.as_view(), name='dashboard'),
 ]
