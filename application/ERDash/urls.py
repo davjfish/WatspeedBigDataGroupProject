@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', views.AdminView.as_view(), name='admin'),
     path('map/', views.MapView.as_view(), name='map'),
     path('summary/', views.ChartsView.as_view(), name='charts'),
+    path('api/emergency-calls/', views.EmergencyCallListAPIView.as_view(), name='calls_api'),
 ]

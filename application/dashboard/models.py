@@ -1,3 +1,4 @@
+import django_filters
 from django.db import models
 
 
@@ -16,9 +17,21 @@ class Township(models.Model):
 class ResponseType(models.Model):
     name = models.CharField(max_length=255, unique=True)
 
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name', ]
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name', ]
 
 
 class ResponseUnit(models.Model):
@@ -29,9 +42,11 @@ class ResponseUnit(models.Model):
         unique_together = ('response_type', 'station_name')
         ordering = ('response_type', "station_name")
 
+    def __str__(self):
+        return f"{self.response_type} - Station {self.station_name}" if self.station_name else self.response_type
+
 
 class EmergencyCall(models.Model):
-
     datetime = models.DateTimeField()
     response_unit = models.ForeignKey(ResponseUnit, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -40,3 +55,6 @@ class EmergencyCall(models.Model):
     address = models.TextField(blank=True, null=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
+
+    class Meta:
+        ordering = ('datetime',)
