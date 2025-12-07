@@ -79,16 +79,20 @@ class EmergencyCallMappingSerializer(ModelSerializer):
             "longitude",
             "category",
             "response_unit",
+            "response_type",
             "dt_display",
         ]
 
     category = StringRelatedField()
     response_unit = StringRelatedField()
     dt_display = SerializerMethodField()
+    response_type =SerializerMethodField()
 
     def get_dt_display(self, instance):
         return naturaltime(instance.datetime)
 
+    def get_response_type(self, instance):
+        return instance.response_unit.response_type.name
 
 class EmergencyCallFilter(django_filters.FilterSet):
     # date_range = django_filters.DateRangeFilter(field_name="datetime", lookup_expr="range")

@@ -16,7 +16,13 @@
   .helptext {
       color: gray;
   }
+
+  v-cloak {
+      display: none;
+  }
+
   </style>
+  {% block more_styles %}{% endblock %}
 </head>
 
 <body>
@@ -45,7 +51,7 @@
 
   {% if show_back %}
     <div class="text-start mb-3">
-      <a href="{% url 'index' %}" class="btn btn-primary">Back </a>
+      <a href="{% url 'index' %}" class="btn btn-dark">Back </a>
     </div>
   {% endif %}
 
