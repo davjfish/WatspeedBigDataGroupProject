@@ -22,17 +22,6 @@ class IndexView(TemplateView):
 
 
 # Create your views here.
-class MapView(TemplateView):
-    template_name = 'map.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["show_back"] = True
-        context["calls"] = [dict(lat=item.latitude, lng=item.longitude) for item in models.EmergencyCall.objects.all()[:1000]]
-        return context
-
-
-# Create your views here.
 class ChartsView(TemplateView):
     template_name = 'charts.html'
 
@@ -86,13 +75,14 @@ class EmergencyCallMappingSerializer(ModelSerializer):
     category = StringRelatedField()
     response_unit = StringRelatedField()
     dt_display = SerializerMethodField()
-    response_type =SerializerMethodField()
+    response_type = SerializerMethodField()
 
     def get_dt_display(self, instance):
         return naturaltime(instance.datetime)
 
     def get_response_type(self, instance):
         return instance.response_unit.response_type.name
+
 
 class EmergencyCallFilter(django_filters.FilterSet):
     # date_range = django_filters.DateRangeFilter(field_name="datetime", lookup_expr="range")
@@ -106,9 +96,37 @@ class EmergencyCallFilter(django_filters.FilterSet):
         }
 
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for key in self.form.fields:
+            self.form.fields[key].widget.attrs["v-model"] = f"filter.{key}"
+            self.form.fields[key].widget.attrs["@change"] = f"updateFilter"
+
+# class EmergencyCallVueJSForm(forms.ModelForm):
+#     class Meta:
+#         model = EmergencyCall
+#         fields = [
+#             'category',
+#             'response_unit__response_type',
+#         ]
+
+
 class EmergencyCallListAPIView(ListAPIView):
     queryset = models.EmergencyCall.objects.all()
     serializer_class = EmergencyCallMappingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     page_size_query_param = "page_size"
     filterset_class = EmergencyCallFilter
+
+
+# Create your views here.
+class MapView(TemplateView):
+    template_name = 'map.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["show_back"] = True
+        context["filter"] = EmergencyCallFilter
+        context["calls"] = [dict(lat=item.latitude, lng=item.longitude) for item in models.EmergencyCall.objects.all()[:1000]]
+        return context

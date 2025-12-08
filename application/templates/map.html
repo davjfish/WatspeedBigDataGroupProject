@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
 
 {% block more_styles %}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -31,8 +32,15 @@
       <div class="mb-3">
         Currently displaying ${callCount.toLocaleString()} emergency calls of ${count.toLocaleString()}.
       </div>
-      <div class="mb-3">
-        <div id="map" ref="map"></div>
+      <div class="row mb-3">
+        <div class="col-2 text-start">
+          {% bootstrap_form filter.form %}
+
+        </div>
+        <div class="col">
+
+          <div id="map" ref="map"></div>
+        </div>
       </div>
 
       <button v-if="moreLoading" disabled class="btn btn-sm btn-warning">
@@ -115,9 +123,13 @@
         map: null,
         ptGroup: null,
         ptBounds: null,
+        filter: {},
       }
     },
     methods: {
+      updateFilter() {
+        alert(123)
+      },
       getCalls() {
         this.initialLoading = true;
         fetch('{% url 'calls_api' %}')
@@ -159,12 +171,9 @@
           );
           this.ptBounds.extend(latLng);
         }
-
         this.map.fitBounds(this.ptBounds);
         this.ptGroup.addTo(this.map);
-
       },
-
       initMap() {
         this.map = this.L.map(this.$refs.map).setView([51.505, -0.09], 13);
         this.L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -178,8 +187,6 @@
         this.loadMarkers(this.calls);
 
       }
-
-
     },
     created() {
       this.getCalls();
