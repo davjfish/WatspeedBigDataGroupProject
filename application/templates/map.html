@@ -19,6 +19,10 @@
 {% endblock %}
 
 {% block body %}
+  <div class="text-start mb-3">
+    <a href="{% url 'index' %}" class="btn btn-primary">Back </a>
+  </div>
+
   <div id="app" v-cloak>
     <div v-if="initialLoading" class="text-center">
       <div class="mb-3">
@@ -28,33 +32,39 @@
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-    <div v-else class="text-center">
-      <div class="mb-3">
+    <div v-else>
+
+     {% include '_fitler.html' %}
+
+      <div class="mb-3 text-center">
         Currently displaying ${callCount.toLocaleString()} emergency calls of ${count.toLocaleString()}.
       </div>
-      <div class="row mb-3">
-        <div class="col-2 text-start">
-          {% bootstrap_form filter.form %}
-
-        </div>
+      <div class="row mb-3 text-center">
         <div class="col">
 
           <div id="map" ref="map"></div>
         </div>
       </div>
 
-      <button v-if="moreLoading" disabled class="btn btn-sm btn-warning">
-        <span class="spinner-border" role="status" style="width: 1rem; height: 1rem;"></span>
-      </button>
-      <button v-else-if="next" @click="loadMore" class="btn btn-sm btn-warning">
-        Load more
-      </button>
-      <button v-else disabled class="btn btn-sm btn-secondary">
-        No more results
-      </button>
+      <div class="float-end form-inline">
+        <label for="page_size">Results to load:</label> <input id="page_size" type="number" v-model="pageSize" class=" " style="width: 5rem;">
+      </div>
+      <div class="">
+        <button v-if="moreLoading" disabled class="btn btn-sm btn-warning">
+          <span class="spinner-border" role="status" style="width: 1rem; height: 1rem;"></span>
+        </button>
+        <button v-else-if="next" @click="loadMore" class="btn btn-sm btn-warning">
+          Load more
+        </button>
+        <button v-else disabled class="btn btn-sm btn-secondary">
+          No more results
+        </button>
+      </div>
     </div>
 
   </div>
+
+
 
 {% endblock %}
 
@@ -109,6 +119,8 @@
     shadowSize: [41, 41]
   });
 
+  let dateRange = {{ datetime_range|safe }};
+
   const {createApp} = Vue
   app = createApp({
     delimiters: ["${", "}"],
@@ -123,16 +135,27 @@
         map: null,
         ptGroup: null,
         ptBounds: null,
-        filter: {},
+        pageSize: 250,
+        filter: {
+          datetime__gte: dateRange[0],
+          datetime__lte: dateRange[1],
+        },
       }
     },
     methods: {
       updateFilter() {
-        alert(123)
+        this.getCalls();
+      },
+      getCallsEndpoint() {
+        let endpoint = `{% url 'calls_api' %}?page_size=${this.pageSize}&`;
+        for (const filterKey in this.filter) {
+          endpoint += `${filterKey}=${this.filter[filterKey]}&`
+        }
+        return endpoint;
       },
       getCalls() {
         this.initialLoading = true;
-        fetch('{% url 'calls_api' %}')
+        fetch(this.getCallsEndpoint())
             .then(response => response.json())
             .then(data => {
               this.calls = data.results;
@@ -171,8 +194,10 @@
           );
           this.ptBounds.extend(latLng);
         }
-        this.map.fitBounds(this.ptBounds);
-        this.ptGroup.addTo(this.map);
+        if (data.length) {
+          this.map.fitBounds(this.ptBounds);
+          this.ptGroup.addTo(this.map);
+        }
       },
       initMap() {
         this.map = this.L.map(this.$refs.map).setView([51.505, -0.09], 13);

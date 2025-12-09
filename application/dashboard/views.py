@@ -2,6 +2,7 @@ import django_filters
 from django import forms
 from django.contrib import messages
 from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.db.models import Max, Min
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
@@ -28,7 +29,7 @@ class ChartsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["show_back"] = True
-        context["areas"] = models.Township.objects.all()
+        context["filter"] = EmergencyCallFilter
         return context
 
 
@@ -85,40 +86,37 @@ class EmergencyCallMappingSerializer(ModelSerializer):
 
 
 class EmergencyCallFilter(django_filters.FilterSet):
-    # date_range = django_filters.DateRangeFilter(field_name="datetime", lookup_expr="range")
-    date_range = django_filters.DateFromToRangeFilter(field_name="datetime", lookup_expr="range")
-
     class Meta:
         model = models.EmergencyCall
         fields = {
             'category': ['exact'],
+            'response_unit': ['exact'],
             'response_unit__response_type': ['exact'],
+            "datetime": ["gte", "lte", ],
         }
-
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.filters["response_unit__response_type"].label = "Response Type"
+        self.filters["datetime__gte"].label = "Datetime ≥"
+        self.filters["datetime__lte"].label = "Datetime ≤"
 
         for key in self.form.fields:
             self.form.fields[key].widget.attrs["v-model"] = f"filter.{key}"
             self.form.fields[key].widget.attrs["@change"] = f"updateFilter"
 
-# class EmergencyCallVueJSForm(forms.ModelForm):
-#     class Meta:
-#         model = EmergencyCall
-#         fields = [
-#             'category',
-#             'response_unit__response_type',
-#         ]
+class LargeResultsSetPagination(pagination.PageNumberPagination):
+    page_size = 1000
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
 
 
 class EmergencyCallListAPIView(ListAPIView):
     queryset = models.EmergencyCall.objects.all()
     serializer_class = EmergencyCallMappingSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    page_size_query_param = "page_size"
     filterset_class = EmergencyCallFilter
-
+    pagination_class = LargeResultsSetPagination
 
 # Create your views here.
 class MapView(TemplateView):
@@ -126,7 +124,8 @@ class MapView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["show_back"] = True
+        qs = models.EmergencyCall.objects.values("datetime").aggregate(max=Max("datetime"), min=Min("datetime"))
+        context["datetime_range"] = [qs["min"].strftime("%Y-%m-%d"), qs["max"].strftime("%Y-%m-%d")]
         context["filter"] = EmergencyCallFilter
         context["calls"] = [dict(lat=item.latitude, lng=item.longitude) for item in models.EmergencyCall.objects.all()[:1000]]
         return context
