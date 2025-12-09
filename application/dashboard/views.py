@@ -127,5 +127,6 @@ class MapView(TemplateView):
         qs = models.EmergencyCall.objects.values("datetime").aggregate(max=Max("datetime"), min=Min("datetime"))
         context["datetime_range"] = [qs["min"].strftime("%Y-%m-%d"), qs["max"].strftime("%Y-%m-%d")]
         context["filter"] = EmergencyCallFilter
+        context["show_back"] = True
         context["calls"] = [dict(lat=item.latitude, lng=item.longitude) for item in models.EmergencyCall.objects.all()[:1000]]
         return context

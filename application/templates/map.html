@@ -19,9 +19,9 @@
 {% endblock %}
 
 {% block body %}
-  <div class="text-start mb-3">
-    <a href="{% url 'index' %}" class="btn btn-primary">Back </a>
-  </div>
+{#  <div class="text-start mb-3">#}
+{#    <a href="{% url 'index' %}" class="btn btn-primary">Back </a>#}
+{#  </div>#}
 
   <div id="app" v-cloak>
     <div v-if="initialLoading" class="text-center">
@@ -34,32 +34,41 @@
     </div>
     <div v-else>
 
-     {% include '_fitler.html' %}
-
-      <div class="mb-3 text-center">
-        Currently displaying ${callCount.toLocaleString()} emergency calls of ${count.toLocaleString()}.
-      </div>
-      <div class="row mb-3 text-center">
+      {% include '_fitler.html' %}
+      <div class="row">
         <div class="col">
 
+          <div class="text-start">
+            <button v-if="moreLoading" disabled class="btn btn-sm btn-warning">
+              <span class="spinner-border" role="status" style="width: 1rem; height: 1rem;"></span>
+            </button>
+            <button v-else-if="next" @click="loadMore" class="btn btn-sm btn-warning">
+              Load more
+            </button>
+            <button v-else disabled class="btn btn-sm btn-secondary">
+              No more results
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3 text-center">
+            Currently displaying ${callCount.toLocaleString()} emergency calls of ${count.toLocaleString()}.
+          </div>
+        </div>
+        <div class="col text-end">
+          <div class="form-inline">
+            <label for="page_size">Results to load:</label> <input id="page_size" type="number" v-model="pageSize" class=" " style="width: 5rem;">
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mb-3 text-center">
+        <div class="col">
           <div id="map" ref="map"></div>
         </div>
       </div>
 
-      <div class="float-end form-inline">
-        <label for="page_size">Results to load:</label> <input id="page_size" type="number" v-model="pageSize" class=" " style="width: 5rem;">
-      </div>
-      <div class="">
-        <button v-if="moreLoading" disabled class="btn btn-sm btn-warning">
-          <span class="spinner-border" role="status" style="width: 1rem; height: 1rem;"></span>
-        </button>
-        <button v-else-if="next" @click="loadMore" class="btn btn-sm btn-warning">
-          Load more
-        </button>
-        <button v-else disabled class="btn btn-sm btn-secondary">
-          No more results
-        </button>
-      </div>
     </div>
 
   </div>
