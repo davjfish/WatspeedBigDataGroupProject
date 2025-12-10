@@ -36,7 +36,6 @@
   <script type="application/javascript">
   let dateRange = {{ datetime_range|safe }};
 
-
   const {createApp} = Vue
   app = createApp({
     delimiters: ["${", "}"],
@@ -62,11 +61,9 @@
         return endpoint;
       },
       getChartIncidentsByCategory() {
-
         if (this.chart1) {
           this.chart1.destroy();
         }
-
         let endpoint = this.getFilteredEndpoint("{% url 'calls_api' %}?chart1=true&");
         fetch(endpoint, {
           method: "get"
