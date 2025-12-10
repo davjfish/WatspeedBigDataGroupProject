@@ -1,11 +1,23 @@
 \section{Data Preparation}
 
-\subsection{What was your data source?}
+\subsection{Emergency - 911 Calls from Kaggle}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The principle dataset used for the project was sourced from Montgomery County, Pennsylvania and is accessible from kaggle ~\cite{mike_chirico_2020}.
+This structured, tabular dataset is provided as a flat CSV file and consists of over 600,000 records of emergency calls from December 2015 to April 2020.
+
+After an initial inspection of the data using exploratory tools from Pandas ~\cite{pandas}, a SQL schema of five tables was devised.
+The five tables and their descriptions are as follows:
+
+\begin{itemize}
+    \item Category - categorical descriptions of the types of calls received (e.g., car accident)
+    \item Township - township name and state (e.g., Kings Township, PA)
+    \item ResponseUnit - complete list of units responding to emergency calls  (e.g., Station 123, EMS)
+    \item ResponseType - the response unit type (e.g., EMS, Traffic, or Fire)
+    \item EmergencyCall - this is the primary data table and used to store information about emergency calls received. It has several links to the above tables.
+\end{itemize}
+
+
+
 
 \subsection{Data quality and procurement?}
 

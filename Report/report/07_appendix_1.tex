@@ -1,0 +1,66 @@
+\section{Appendix 1: SQL Schema of Emergency Response Database}
+
+\begin{verbatim}
+
+CREATE TABLE IF NOT EXISTS "EmergencyCall" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "datetime" datetime NOT NULL,
+    "address" text NULL,
+    "latitude" real NOT NULL,
+    "longitude" real NOT NULL,
+    "category_id" bigint NOT NULL
+        REFERENCES "Category" ("id"),
+    "response_unit_id" bigint NOT NULL
+        REFERENCES "ResponseUnit" ("id"),
+    "zip_code" smallint NULL, "township_id" bigint NULL
+        REFERENCES "Township" ("id")
+);
+
+CREATE INDEX "emergencycall_category_id_28afcc20"
+    ON "EmergencyCall" ("category_id");
+
+CREATE INDEX "emergencycall_response_unit_id_f0a9566e"
+    ON "EmergencyCall" ("response_unit_id");
+
+CREATE INDEX "emergencycall_township_id_c7779d84"
+    ON "EmergencyCall" ("township_id");
+
+CREATE TABLE IF NOT EXISTS "Township" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "state" varchar(10) NOT NULL,
+    "name" varchar(255) NOT NULL
+);
+
+CREATE UNIQUE INDEX "township_state_name_a30a5e69_uniq"
+    ON "Township" ("state", "name");
+
+\end{verbatim}
+
+\pagebreak
+
+\begin{verbatim}
+
+CREATE TABLE IF NOT EXISTS "ResponseUnit" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "station_name" varchar(255) NOT NULL,
+    "response_type_id" bigint NOT NULL
+        REFERENCES "ResponseType" ("id")
+);
+
+CREATE UNIQUE INDEX "responseunit_response_type_id_station_name_25efee89_uniq"
+    ON "ResponseUnit" ("response_type_id", "station_name");
+
+CREATE INDEX "responseunit_response_type_id_21e2bd85"
+    ON "ResponseUnit" ("response_type_id");
+
+CREATE TABLE IF NOT EXISTS "Category" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" varchar(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS "ResponseType" (
+    "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" varchar(255) NOT NULL UNIQUE
+);
+
+\end{verbatim}
