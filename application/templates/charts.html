@@ -7,39 +7,112 @@
 {% endblock %}
 
 {% block body %}
-  {% include '_fitler.html' %}
-  <div>
-    <canvas id="myChart"></canvas>
+  <div id="app">
+    {% include '_filter.html' %}
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">Breakdown of Incidents by Category</h5>
+      </div>
+      <div class="card-body">
+        <div v-if="loading" class="spinner-border mb-5" role="status" style="width: 4rem; height: 4rem;">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div v-else>
+          <canvas ref="chart1"></canvas>
+        </div>
+      </div>
+    </div>
   </div>
 
 {% endblock %}
 
 
 {% block js %}
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <script>
-  const ctx = document.getElementById('myChart');
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+  <script type="application/javascript">
+  let dateRange = {{ datetime_range|safe }};
+
+
+  const {createApp} = Vue
+  app = createApp({
+    delimiters: ["${", "}"],
+    data() {
+      return {
+        Chart,
+        loading: true,
+        filter: {
+          datetime__gte: dateRange[0],
+          datetime__lte: dateRange[1],
+        },
+        chart1: null,
       }
-    }
-  });
+    },
+    methods: {
+      updateFilter() {
+        this.getChartIncidentsByCategory();
+      },
+      getFilteredEndpoint(endpoint) {
+        for (const filterKey in this.filter) {
+          endpoint += `${filterKey}=${this.filter[filterKey]}&`
+        }
+        return endpoint;
+      },
+      getChartIncidentsByCategory() {
+
+        if (this.chart1) {
+          this.chart1.destroy();
+        }
+
+        let endpoint = this.getFilteredEndpoint("{% url 'calls_api' %}?chart1=true&");
+        fetch(endpoint, {
+          method: "get"
+        })
+            .then(response => response.json())
+            .then(data => {
+              this.loading = false;
+              this.$nextTick(() => {
+                this.chart1 = new this.Chart(this.$refs.chart1, {
+                  type: 'bar',
+                  data: {
+                    labels: data.labels, //['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                      label: '# of Incidents',
+                      data: data.counts, //[12, 19, 3, 5, 2, 3],
+                      borderWidth: 1
+                    }]
+                  },
+                  options: {
+                    scales: {
+                      y: {
+                        beginAtZero: true
+                      }
+                    }
+                  }
+                });
+              })
+            })
+      },
+    },
+    created() {
+        this.getChartIncidentsByCategory();
+    },
+    computed: {
+      isLoading() {
+        return this.loading;
+      }
+    },
+  })
+  app.mount("#app")
+  </script>
+
+
+  <script>
+
+
   </script>
 
 {% endblock %}

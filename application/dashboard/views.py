@@ -2,7 +2,7 @@ import django_filters
 from django import forms
 from django.contrib import messages
 from django.contrib.humanize.templatetags.humanize import naturaltime
-from django.db.models import Max, Min
+from django.db.models import Max, Min, Count
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView
@@ -11,10 +11,13 @@ from dashboard.utils import CSVParser
 
 from dashboard import models
 from rest_framework import permissions, pagination
+from rest_framework.decorators import action
 from rest_framework.fields import SerializerMethodField
 from rest_framework.generics import ListAPIView
 from rest_framework.relations import StringRelatedField
+from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
+from rest_framework.status import HTTP_200_OK
 
 
 # Create your views here.
@@ -29,6 +32,8 @@ class ChartsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["show_back"] = True
+        qs = models.EmergencyCall.objects.values("datetime").aggregate(max=Max("datetime"), min=Min("datetime"))
+        context["datetime_range"] = [qs["min"].strftime("%Y-%m-%d"), qs["max"].strftime("%Y-%m-%d")]
         context["filter"] = EmergencyCallFilter
         return context
 
@@ -105,6 +110,7 @@ class EmergencyCallFilter(django_filters.FilterSet):
             self.form.fields[key].widget.attrs["v-model"] = f"filter.{key}"
             self.form.fields[key].widget.attrs["@change"] = f"updateFilter"
 
+
 class LargeResultsSetPagination(pagination.PageNumberPagination):
     page_size = 1000
     page_size_query_param = 'page_size'
@@ -114,9 +120,22 @@ class LargeResultsSetPagination(pagination.PageNumberPagination):
 class EmergencyCallListAPIView(ListAPIView):
     queryset = models.EmergencyCall.objects.all()
     serializer_class = EmergencyCallMappingSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.]
     filterset_class = EmergencyCallFilter
     pagination_class = LargeResultsSetPagination
+
+    def list(self, request, *args, **kwargs):
+        qp = request.query_params
+        if qp.get("chart1"):
+            queryset = self.filter_queryset(self.get_queryset())
+            queryset = list(queryset.order_by("category").values("category").distinct().annotate(count=Count("id")))
+            queryset.sort(key=lambda x: x["count"], reverse=True)
+            category_lookup = {item.id:str(item) for item in models.Category.objects.all()}
+            categories = [category_lookup[item["category"]] for item in queryset]
+            counts = [item["count"] for item in queryset]
+            return Response(dict(labels=categories, counts=counts), status=HTTP_200_OK)
+        return super().list(request, *args, **kwargs)
+
 
 # Create your views here.
 class MapView(TemplateView):
