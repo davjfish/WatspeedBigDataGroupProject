@@ -1,7 +1,31 @@
 \begin{thebibliography}{1}
 
+\bibitem{charts}
+{Chart.js — Simple yet flexible JavaScript charting library for the modern
+  web. }.
+
+\bibitem{leaflet}
+{Leaflet—A JavaScript Library for Interactive Maps.}
+
+\bibitem{vue}
+{Vue.JS - The Progressive JavaScript Framework}.
+
 \bibitem{mike_chirico_2020}
 Mike Chirico.
 \newblock Emergency - 911 calls, 2020.
+
+\bibitem{django}
+{Django Software Foundation}.
+\newblock Django.
+
+\bibitem{drf}
+{Encode (main developer Tom Christie) and contributors}.
+\newblock {Django REST framework}.
+
+\bibitem{pandas}
+NumFOCUS.
+\newblock pandas.
+\newblock \url{https://pandas.pydata.org/pandas-docs/stable/index.html}, 2023.
+\newblock Accessed on 2023-12-11.
 
 \end{thebibliography}

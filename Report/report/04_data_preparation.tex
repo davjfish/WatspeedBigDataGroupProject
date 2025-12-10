@@ -5,7 +5,7 @@
 The principle dataset used for the project was sourced from Montgomery County, Pennsylvania and is accessible from kaggle ~\cite{mike_chirico_2020}.
 This structured, tabular dataset is provided as a flat CSV file and consists of over 600,000 records of emergency calls from December 2015 to April 2020.
 
-After an initial inspection of the data using exploratory tools from Pandas ~\cite{pandas}, a SQL schema of five tables was devised.
+After an initial inspection of the data using exploratory tools from Pandas~\cite{pandas}, a SQL schema of five tables was devised.
 The five tables and their descriptions are as follows:
 
 \begin{itemize}
@@ -22,15 +22,45 @@ For example, we only wanted there to be a single entry for \"back pain\" in the 
 The Township and ResponseUnit tables both had unique together constraints across two columns.
 In the case of the former, only a single entry for a combination of township name and state was desired and for the latter,
 only a single combination of response unit and station name was desired.
+Finally, Figure~\ref{fig:sqldiagram} presents a visual portrayal of the five above table and the relationships between them.
+
+
+\subsection{A Dashboard Application and Database}
+
+In order to better demonstrate and a feasible use-case for this dashboard, our group created a mock-up of an application.
+The framework selected for this project was Django~\cite{django}.
+This python framework is a Object-Relational Mapping (ORM) tool and supports fast-paced development.
+Furthermore, we were able to take advantage of the Django API to migrate changes to an actual database.
+For demonstration purposes, our group decided to use a simple sqlite database however the django framework itself is \"database agnostic\".
+Django also has some great packages for developing a REST API, specifically, we leveraged classes from the Django REST Framework~\cite{drf} package.
+
+On the frontend of the application, this tool will use a combination of django templates and JavaScript (JS) libraries to present end-users with
+information from the dashboard.
+The JS libraries in conjunction with the REST API is a great way to provide users with a reactive experience.
+
+
+The Django web-application will also be used to define a Parser class that will be used to ingest the CSV data.
+Th
+
+The mock application will be hosted in on a free-tier cloud platform in order to illicit feedback from stakeholders.
+
+Finally, all the code for this report and for the application is store in this publicly accessible git repository on GitHub:
+\url{hhttps://github.com/davjfish/WatspeedBigDataGroupProject/}.
 
 
 
 
-\subsection{Data quality and procurement?}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+
+
 
 \pagebreak
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{SQL.png}
+    \caption{A visual depiction of the five tables in our SQL database design.}
+    \label{fig:sqldiagram}
+\end{figure}
+
+
