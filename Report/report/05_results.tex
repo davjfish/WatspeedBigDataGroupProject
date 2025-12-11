@@ -30,6 +30,8 @@ This confirms that our schema has indeed achieved greater storage efficiency tha
 \subsection{Emergency Response Dashboard Application}
 
 The mockup of the Emergency Response Application can be viewed on the internet \href{https://dfishman.pythonanywhere.com/}{here}.
+The application is being hosted on the PythonAnywhere cloud with a free-tier account.
+While this is great for demonstration purposes, the free-tiered containers are low performant and thus very slow.
 The application has a landing page, a map, a data summary page and an administration page reserved for manually importing data.
 All of these pages are very basic and have the sole purpose of demonstrating a proof of concept.
 
@@ -88,13 +90,28 @@ First, the data is read into a Pandas DataFrame and cleaned using the
     }
 \end{enumerate}
 
-Next, we iterate through a unique list of all the townships in the data.
+Next, we \href{https://github.com/davjfish/WatspeedBigDataGroupProject/blob/main/application/dashboard/parsers.py#L40}{iterate through a unique list of all the townships} in the data.
 Since we are not expecting there to be too many townships, it is safe to proceed item by item in the unique array.
 For each item, we strip trailing whitespace from the strings and convert them to uppercase in order to minimize the potential for duplicate entries.
 Then, we initialize a \texttt{Township} object and append it to a python list.
 At the end of that loop, we execute a bulk create query to add all the townships in a single transaction.
 Since there is a unique constraint on a Township's name and state, duplicate entries will be rejected.
 However, if we use the \texttt{INSERT or IGNORE} statement to the bulk create, the transaction will still be accepted.
+Then, we create a lookup dictionary of township name to database primary key and map this dictionary to the original dataframe---resulting
+in each row having a Township ID\@.
+The same approach was repeated for \href{https://github.com/davjfish/WatspeedBigDataGroupProject/blob/main/application/dashboard/parsers.py#L53}{ResponseType},
+~\href{https://github.com/davjfish/WatspeedBigDataGroupProject/blob/main/application/dashboard/parsers.py#L64}{Category} and
+~\href{https://github.com/davjfish/WatspeedBigDataGroupProject/blob/main/application/dashboard/parsers.py#L75}{ResponseUnit}.
+
+Finally, we are ready to create the individual entries for each emergency call.
+Since we are now dealing with a much higher quantity of records, we cannot simply iterate through each row of the database.
+Instead, we will leverage parallel processing by using the Pandas DataFrame apply method.
+We start by defining a protected-member method called \texttt{\_make\_call\_from\_row} that assembles an \texttt{EmergencyCall} object from a row in the dataframe
+and appending it to a list.
+Then, just as above we will execute a SQL bulk create query to write all the objects to the database.
+
+
+
 
 %
 %
