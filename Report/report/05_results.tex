@@ -111,7 +111,9 @@ and appending it to a list.
 Then, just as above we will execute a SQL bulk create query to write all the objects to the database.
 Running the parser locally on a standard desktop computer takes about 1\-2 minutes to ingest over 600K records.
 
-
+The nice thing about creating a parser class, as opposed to a mere function, is that it can be cleanly instantiated in different parts of the code.
+In our demonstration, we create a form for site administrators to upload a CSV and to specify a data format.
+This is shown in Figure~\ref{fig:form}.
 
 \pagebreak
 
@@ -136,5 +138,12 @@ Running the parser locally on a standard desktop computer takes about 1\-2 minut
     \includegraphics[width=\linewidth]{chart.png}
     \caption{The Emergency Dashboard application's charts page.}
     \label{fig:chart}
+\end{figure}
+
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{form.png}
+    \caption{A screenshot of the Data Import portal.}
+    \label{fig:form}
 \end{figure}
 

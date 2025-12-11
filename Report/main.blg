@@ -21,49 +21,55 @@ Warning--entry type for "charts" isn't style-file defined
 --line 46 of file refs.bib
 Warning--entry type for "sqlite" isn't style-file defined
 --line 52 of file refs.bib
+Warning--entry type for "celery" isn't style-file defined
+--line 57 of file refs.bib
+Warning--entry type for "redis" isn't style-file defined
+--line 62 of file refs.bib
 Warning--to sort, need author or key in sqlite
 Warning--to sort, need author or key in vue
 Warning--to sort, need author or key in leaflet
 Warning--to sort, need author or key in charts
-You've used 8 entries,
+Warning--to sort, need author or key in celery
+Warning--to sort, need author or key in redis
+You've used 10 entries,
             2118 wiz_defined-function locations,
-            527 strings with 4620 characters,
-and the built_in function-call counts, 1412 in all, are:
-= -- 119
-> -- 32
+            540 strings with 4957 characters,
+and the built_in function-call counts, 1809 in all, are:
+= -- 170
+> -- 34
 < -- 0
-+ -- 16
++ -- 18
 - -- 8
-* -- 44
-:= -- 196
-add.period$ -- 14
-call.type$ -- 8
-change.case$ -- 28
+* -- 54
+:= -- 253
+add.period$ -- 25
+call.type$ -- 10
+change.case$ -- 34
 chr.to.int$ -- 0
-cite$ -- 12
-duplicate$ -- 56
-empty$ -- 181
+cite$ -- 16
+duplicate$ -- 70
+empty$ -- 227
 format.name$ -- 8
-if$ -- 324
+if$ -- 425
 int.to.chr$ -- 0
-int.to.str$ -- 8
+int.to.str$ -- 10
 missing$ -- 0
-newline$ -- 33
+newline$ -- 48
 num.names$ -- 8
-pop$ -- 65
+pop$ -- 80
 preamble$ -- 1
-purify$ -- 20
+purify$ -- 24
 quote$ -- 0
-skip$ -- 74
+skip$ -- 76
 stack$ -- 0
-substring$ -- 40
-swap$ -- 8
+substring$ -- 50
+swap$ -- 10
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 32
-warning$ -- 4
+type$ -- 40
+warning$ -- 6
 while$ -- 8
-width$ -- 9
-write$ -- 56
-(There were 10 warnings)
+width$ -- 12
+write$ -- 84
+(There were 14 warnings)

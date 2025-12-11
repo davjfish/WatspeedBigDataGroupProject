@@ -1,23 +1,40 @@
 \section{Conclusions}
 
+This project helped us develop an appreciation of the types of challenges that developers and data analysts face when
+attempting to integrate large dataset from disparate sources.
+In this section, we will go through each of the challenges and outline our recommendations based on this work.
 
-This project helped develop an appreciation of the complexity of integrating
+\subsection{Data Acquision and Integration}
 
+In this proof of concept, we demonstrated how a flat file, formated as tabular or serialized data (e.g., CSV or JSON), can be uploaded to a website through a
+customized site administration portal.
+However, in future applications, the dashboard application could have associated cron tasks that automatically connect to remote systems and
+download new data.
+As noted in the previous section, each source schema would have to have their custom-made parser class.
 
-\subsection{Future Development}
+A challenge that was faced when importing data via an HTML form is that large datasets take a long time to process.
+Modern-day web users do not want to wait several minutes for a form to submit.
+Furthermore, large HTTP requests like this can bind up the web server.
+An improvement to this system would be the introduction of asynchronousity.
+For example, once the flat file was uploaded, a new asynchronous thread could be started which then calls the appropriate parser class.
+Meanwhile, the end user can receive notifications about the progress (or lack thereof in the case of an error) or their import attempt.
+In the context of python and Django, Celery~\cite{celery} is a great tool for the implementation of asynchronous tasks.
+The use of a celery application would further require use of a messaging server such as Redis~\cite{redis}.
 
+\subsection{Database Consideration}
+- sqlite not acceptable to use in a production environment. What would we use?
+this is suitable of a proof of concept however this would not be an acceptable tool to use in a production environment."
+- django database routers
+Horizontal Scaling use replicas etc.
 
- Scratch ideas:
+Is there any room for NoSQL?
 
- - it would be great to handle the ingestion the csv data using async, maybe something like celery where it can happen in the background
-- database routers
-- metadata fields such as created_at and created_by
-- sqlite not acceptable to use in a production environment. What would we use? "---this is suitable of a proof of concept however this would not be an acceptable tool to use in a production environment."
+\subsection{Web Application User Permissions}
 
+- would need classes of users and to handle permissions on the different types of views
+- metadata fields such as \texttt{created\_at} and \texttt{created\_by}
 
-a discussion about the parser classes and how they can be called in the context of uploading a CSV or a web scrapper that is interacting with an API for an outside system
-
+\subsection{REST API Development}
 
 it would probably make sense to put a lot of investment in the rest api to maximize interoperability between systems
 
-one drawback is what happens if the data schema from a source changes.
