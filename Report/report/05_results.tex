@@ -109,26 +109,7 @@ Instead, we will leverage parallel processing by using the Pandas DataFrame appl
 We start by defining a protected-member method called \texttt{\_make\_call\_from\_row} that assembles an \texttt{EmergencyCall} object from a row in the dataframe
 and appending it to a list.
 Then, just as above we will execute a SQL bulk create query to write all the objects to the database.
-
-
-
-
-%
-%
-%
-%
-%
-%
-%Specifically, in addition to HTML Django templates, the reactive front-end of the application
-%will be  developed using Vue.js~\cite{vue}, Leaflet~\cite{leaflet} and Charts.js~\cite{charts}.
-%
-%
-%On the backend of the application a parser class was defined in order to handle the incoming CSV and its digestion into the database.
-%- leveraging bulk creates
-%
-%The Django web-application will also be used to define a Parser class that will be used to ingest the CSV data.
-%Th
-
+Running the parser locally on a standard desktop computer takes about 1\-2 minutes to ingest over 600K records.
 
 
 
