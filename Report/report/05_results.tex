@@ -1,14 +1,7 @@
 \section{Results}
 
 
-
-
-
-\subsection{Relational Database Schema}
-
-The principle dataset used for the project was sourced from Montgomery County, Pennsylvania and is accessible
-\href{https://www.kaggle.com/dsv/1381403}{here}~\cite{mike_chirico_2020}.
-This structured, tabular dataset is provided as a flat CSV file and consists of over 600,000 records of emergency calls from December 2015 to April 2020.
+\subsection{Database Design and Implementation}
 
 After an initial inspection of the data using exploratory tools from Pandas~\cite{pandas}, a SQL schema of five tables was devised and drafted.
 The five resulting tables and their descriptions are as follows:
@@ -21,19 +14,24 @@ The five resulting tables and their descriptions are as follows:
     \item EmergencyCall - this is the primary data table and used to store information about emergency calls received. It has several links to the above tables.
 \end{itemize}
 
-
-
+Figure~\ref{fig:sqldiagram} presents a visual portrayal of the five above table and the relationships between them.
 In addition to the foreign key constraints between tables, indexes were added to each table to improve performance.
 Unique constraints were placed on fields in tables were duplication of data entry was not wanted.
 For example, we only wanted there to be a single entry for \"back pain\" in the Category table and only a single entry for \"EMS\" in the ResponseType table.
 The Township and ResponseUnit tables both had unique together constraints across two columns.
 In the case of the former, only a single entry for a combination of township name and state was desired and for the latter,
 only a single combination of response unit and station name was desired.
-Finally, Figure~\ref{fig:sqldiagram} presents a visual portrayal of the five above table and the relationships between them.
+Finally, the complete SQL definitions of the above tables and indices can be found in \hyperref[sec:app1]{Appendix 1}.
+
+The file size of the original CSV downloaded from Kaggle was approximately 123 MB\@.
+Following the creation of the database and subsequent ingestion of the data, the file size was reduced to approximately 75 MB\@, including all the indices.
+This confirms that our schema has indeed achieved greater storage efficiency than the CSV flat file.
 
 
 
-gains in efficiency
+
+
+
 
 
 Specifically, in addition to HTML Django templates, the reactive front-end of the application
@@ -49,6 +47,13 @@ Th
 
 
 
-\subsection{Methodology}
-
 \pagebreak
+
+
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{SQL.png}
+    \caption{A visual depiction of the five tables in our SQL database design.}
+    \label{fig:sqldiagram}
+\end{figure}
+

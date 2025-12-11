@@ -1,4 +1,4 @@
-\section{Data Preparation}
+\section{Methods}
 
 \subsection{Designing a Relational Database Schema}
 
@@ -6,7 +6,7 @@ The principle dataset used for the project was sourced from Montgomery County, P
 \href{https://www.kaggle.com/dsv/1381403}{here}~\cite{mike_chirico_2020}.
 This structured, tabular dataset is provided as a flat CSV file and consists of over 600,000 records of emergency calls from December 2015 to April 2020.
 This dataset will be used to create an outline of the database schema that will be used to store the dashboard data.
-In order to achieve this, We will explore the dataset by importing it into a Pandas dataframe~\cite{pandas} and inspect the types of data stored in each column.
+In order to achieve this, We will explore the dataset by importing it into a dataframe and inspect the data types being stored in each column.
 Subsequently, we will decide on the best way to separate the data into discrete tables.
 In addition to foreign key and uniqueness constraints, we will ensure the strategic implementation of database indexes in order to optimize database performance.
 Finally, for the sake of demonstration, we decided to utilize a simple sqlite database~\cite{sqlite}.
@@ -27,20 +27,13 @@ On the frontend of the application, we will use a combination of HTML, the Djang
 information from the dashboard.
 In particular, the JavaScript library Vue.js~\cite{vue} will be important in providing users with a reactive, modern experience.
 Aside from Vue.js, we will also utilize Leaflet~\cite{leaflet} and Charts.js~\cite{charts} for mapping and reactive graphing, respectively.
+The mock application will be hosted in on a free-tier cloud platform in order to illicit feedback from stakeholders.
 
 \subsection{Data Ingestion}
 
 One of the challenges we will face in this endeavor is how to load information coming in from disparate data sources.
 We will address this by creating a Python class for handling, parsing and ingesting serialized emergency call data.
-
-
-
-As a proof of
-
-The Django web-application will also be used to define a Parser class that will be used to ingest the CSV data.
-Th
-
-The mock application will be hosted in on a free-tier cloud platform in order to illicit feedback from stakeholders.
+A separate Parser class will have to be developed for each schema of incoming data.
 
 \subsection{Code Repository}
 
@@ -48,19 +41,5 @@ All the code for this report and for the application will be stored in a publicl
 \url{GitHub}{hhttps://github.com/davjfish/WatspeedBigDataGroupProject/}.
 
 
-
-
-
-
-
-
-
 \pagebreak
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{SQL.png}
-    \caption{A visual depiction of the five tables in our SQL database design.}
-    \label{fig:sqldiagram}
-\end{figure}
-
 

@@ -3,8 +3,8 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 A level-1 auxiliary file: report/00_title_page.aux
 A level-1 auxiliary file: report/03_objectives.aux
-A level-1 auxiliary file: report/04_data_preparation.aux
-A level-1 auxiliary file: report/05_analysis.aux
+A level-1 auxiliary file: report/04_methods.aux
+A level-1 auxiliary file: report/05_results.aux
 A level-1 auxiliary file: report/06_conclusions.aux
 A level-1 auxiliary file: report/07_appendix_1.aux
 The style file: plain.bst
@@ -19,48 +19,51 @@ Warning--entry type for "leaflet" isn't style-file defined
 --line 40 of file refs.bib
 Warning--entry type for "charts" isn't style-file defined
 --line 46 of file refs.bib
+Warning--entry type for "sqlite" isn't style-file defined
+--line 52 of file refs.bib
+Warning--to sort, need author or key in sqlite
 Warning--to sort, need author or key in vue
 Warning--to sort, need author or key in leaflet
 Warning--to sort, need author or key in charts
-You've used 7 entries,
+You've used 8 entries,
             2118 wiz_defined-function locations,
-            525 strings with 4616 characters,
-and the built_in function-call counts, 1264 in all, are:
-= -- 107
-> -- 31
+            527 strings with 4620 characters,
+and the built_in function-call counts, 1412 in all, are:
+= -- 119
+> -- 32
 < -- 0
-+ -- 15
++ -- 16
 - -- 8
-* -- 39
-:= -- 182
-add.period$ -- 13
-call.type$ -- 7
-change.case$ -- 25
+* -- 44
+:= -- 196
+add.period$ -- 14
+call.type$ -- 8
+change.case$ -- 28
 chr.to.int$ -- 0
-cite$ -- 10
-duplicate$ -- 49
-empty$ -- 158
+cite$ -- 12
+duplicate$ -- 56
+empty$ -- 181
 format.name$ -- 8
-if$ -- 287
+if$ -- 324
 int.to.chr$ -- 0
-int.to.str$ -- 7
+int.to.str$ -- 8
 missing$ -- 0
-newline$ -- 30
+newline$ -- 33
 num.names$ -- 8
-pop$ -- 57
+pop$ -- 65
 preamble$ -- 1
-purify$ -- 18
+purify$ -- 20
 quote$ -- 0
-skip$ -- 64
+skip$ -- 74
 stack$ -- 0
-substring$ -- 35
-swap$ -- 7
+substring$ -- 40
+swap$ -- 8
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 28
-warning$ -- 3
+type$ -- 32
+warning$ -- 4
 while$ -- 8
-width$ -- 8
-write$ -- 51
-(There were 8 warnings)
+width$ -- 9
+write$ -- 56
+(There were 10 warnings)
