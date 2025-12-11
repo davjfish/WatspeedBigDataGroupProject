@@ -6,7 +6,7 @@ In this section, we will go through each of the challenges and outline our recom
 
 \subsection{Data Acquision and Integration}
 
-In this proof of concept, we demonstrated how a flat file, formated as tabular or serialized data (e.g., CSV or JSON), can be uploaded to a website through a
+In this proof-of-concept, we demonstrated how a flat file, formated as tabular or serialized data (e.g., CSV or JSON), can be uploaded to a website through a
 customized site administration portal.
 However, in future applications, the dashboard application could have associated cron tasks that automatically connect to remote systems and
 download new data.
@@ -22,12 +22,50 @@ In the context of python and Django, Celery~\cite{celery} is a great tool for th
 The use of a celery application would further require use of a messaging server such as Redis~\cite{redis}.
 
 \subsection{Production Database Considerations}
-- sqlite not acceptable to use in a production environment. What would we use?
-this is suitable of a proof of concept however this would not be an acceptable tool to use in a production environment."
-- django database routers
-Horizontal Scaling use replicas etc.
+The current proof-of-concept utilizes SQLite as the database engine for simplicity and ease of development.
+SQLite is an excellent choice for embedded systems, testing, and local development due to its serverless architecture and low overhead.
+However, it presents significant limitations when transitioning to a full production environment that demands concurrent access, robust performance, and scalability.
+%
+%Rationale for Transitioning to a Production-Ready Database
+%For a production environment handling critical emergency response data, the following requirements dictate a move away from SQLite:
+%\begin{itemize}
+%\item Concurrency: SQLite locks the entire database file during writes, which is unsuitable for a dashboard where multiple users (dispatchers, administrators, analysts) need simultaneous read and write access.
+%\item Scalability and Performance: Production systems require a database that can leverage multi-core servers, manage high transaction volumes efficiently, and support complex, high-speed querying.
+%\item Networking Protocol: SQLite operates locally on a file system, whereas production systems require a client-server architecture to provide network access to the data securely.
+%\end{itemize}
+%\subsubsection{Recommended Production Database Systems}
 
-Is there any room for NoSQL?
+In a production system, we recommend transitioning to a robust, enterprise-grade relational database management system (RDBMS).
+Given the geographic information systems (GIS) component of this project, PostgreSQL would be a great fit.
+To ensure the dashboard operates reliably under heavy load, specific architectural approaches must be implemented:
+\begin{enumerate}
+\item{
+    \textbf{Database Replicas and Horizontal Scaling:}
+    The production setup should utilize database replication.
+    A "primary" instance handles all write operations, while one or more "replica" instances handle data-intensive read operations
+    (e.g., loading dashboard visualizations and running historical reports).
+    This horizontally scales the system's ability to serve data quickly.
+}
+\item{
+    \textbf{Django Database Routers:}
+    When using the Django framework, a custom Database Router can be implemented.
+    This logic layer dictates which database instance should handle a specific query.
+    For example, all INSERT operations are routed to the primary database, while all SELECT operations are routed to an available replica,
+    optimizing overall performance.
+}
+\end{enumerate}
+
+While the current emergency call log data is highly structured and well-suited for a relational model, there may be room for NoSQL databases in a more advanced application:
+
+\begin{itemize}
+\item Real-time Logging and Telemetry: NoSQL databases (like MongoDB or Redis) could efficiently manage high-volume, unstructured data streams such as real-time GPS location updates from emergency vehicles or operational telemetry logs, where the schema might evolve rapidly.
+\item Caching: A NoSQL store (e.g., Redis) is an excellent caching layer for frequently accessed dashboard metrics, reducing the load on the primary RDBMS and ensuring rapid dashboard loading times.
+\end{itemize}
+
+The decision for the primary data store remains RDBMS, but a hybrid approach using NoSQL for specific,
+high-velocity data points offers a path for future optimization.
+
+
 
 \subsection{Web Application User Permissions}
 
