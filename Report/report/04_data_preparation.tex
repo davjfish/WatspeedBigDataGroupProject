@@ -9,30 +9,43 @@ This dataset will be used to create an outline of the database schema that will 
 In order to achieve this, We will explore the dataset by importing it into a Pandas dataframe~\cite{pandas} and inspect the types of data stored in each column.
 Subsequently, we will decide on the best way to separate the data into discrete tables.
 In addition to foreign key and uniqueness constraints, we will ensure the strategic implementation of database indexes in order to optimize database performance.
-Finally, we will use a sqlite database---this is suitable of a proof of concept however this would not be an acceptable tool to use in a production environment.
+Finally, for the sake of demonstration, we decided to utilize a simple sqlite database~\cite{sqlite}.
 
 \subsection{Dashboard REST API and Application}
 
-In order to better demonstrate and a feasible use-case for this dashboard, our group will create a mock-up of an application.
-The framework selected for this project was Django~\cite{django}---a Python object-relational mapping (ORM) framework.
-Django also has a wonderful API to many commonly used SQL databases which we plan to leverage by first drafting
-the tables as python classes and then migrating those classes to an actual database.
+In order to provide stakeholders with a concrete vision of our dashboard, our group will create a mock-up of this application.
+The framework selected to do this was Django~\cite{django}---a Python object-relational mapping (ORM) web framework.
+Django also has a wonderful built-in API for working with the most common types of relation database management systems.
+This is great because the tables can be drafted as database-agnostic models and migrated to different systems in different environments.
 
-For demonstration purposes, our group decided to use a simple sqlite database however the django framework itself is \"database agnostic\".
-Django also has some great packages for developing a REST API, specifically, we leveraged classes from the Django REST Framework~\cite{drf} package.
+Additionally, Django also has some great external packages for developing a REST API\@.
+In particular, the Django REST Framework~\cite{drf} will be used to define endpoints that will be used for acquiring data from the application.
+This framework provides a quick and effective way of serializing the Django models (i.e., database tables) into a JSON response as well as
+writing incoming serialized data to the database.
 
-On the frontend of the application, this tool will use a combination of django templates and JavaScript (JS) libraries to present end-users with
+On the frontend of the application, we will use a combination of HTML, the Django templating language and JavaScript to present end-users with
 information from the dashboard.
-The JS libraries in conjunction with the REST API is a great way to provide users with a reactive experience.
+In particular, the JavaScript library Vue.js~\cite{vue} will be important in providing users with a reactive, modern experience.
+Aside from Vue.js, we will also utilize Leaflet~\cite{leaflet} and Charts.js~\cite{charts} for mapping and reactive graphing, respectively.
 
+\subsection{Data Ingestion}
+
+One of the challenges we will face in this endeavor is how to load information coming in from disparate data sources.
+We will address this by creating a Python class for handling, parsing and ingesting serialized emergency call data.
+
+
+
+As a proof of
 
 The Django web-application will also be used to define a Parser class that will be used to ingest the CSV data.
 Th
 
 The mock application will be hosted in on a free-tier cloud platform in order to illicit feedback from stakeholders.
 
-Finally, all the code for this report and for the application is store in this publicly accessible git repository on GitHub:
-\url{hhttps://github.com/davjfish/WatspeedBigDataGroupProject/}.
+\subsection{Code Repository}
+
+All the code for this report and for the application will be stored in a publicly accessible git repository on
+\url{GitHub}{hhttps://github.com/davjfish/WatspeedBigDataGroupProject/}.
 
 
 
