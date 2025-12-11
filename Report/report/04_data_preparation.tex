@@ -1,36 +1,23 @@
 \section{Data Preparation}
 
-\subsection{Emergency - 911 Calls from Kaggle}
+\subsection{Designing a Relational Database Schema}
 
-The principle dataset used for the project was sourced from Montgomery County, Pennsylvania and is accessible from kaggle ~\cite{mike_chirico_2020}.
+The principle dataset used for the project was sourced from Montgomery County, Pennsylvania and is accessible
+\href{https://www.kaggle.com/dsv/1381403}{here}~\cite{mike_chirico_2020}.
 This structured, tabular dataset is provided as a flat CSV file and consists of over 600,000 records of emergency calls from December 2015 to April 2020.
+This dataset will be used to create an outline of the database schema that will be used to store the dashboard data.
+In order to achieve this, We will explore the dataset by importing it into a Pandas dataframe~\cite{pandas} and inspect the types of data stored in each column.
+Subsequently, we will decide on the best way to separate the data into discrete tables.
+In addition to foreign key and uniqueness constraints, we will ensure the strategic implementation of database indexes in order to optimize database performance.
+Finally, we will use a sqlite database---this is suitable of a proof of concept however this would not be an acceptable tool to use in a production environment.
 
-After an initial inspection of the data using exploratory tools from Pandas~\cite{pandas}, a SQL schema of five tables was devised.
-The five tables and their descriptions are as follows:
+\subsection{Dashboard REST API and Application}
 
-\begin{itemize}
-    \item Category - categorical descriptions of the types of calls received (e.g., car accident)
-    \item Township - township name and state (e.g., Kings Township, PA)
-    \item ResponseUnit - complete list of units responding to emergency calls  (e.g., Station 123, EMS)
-    \item ResponseType - the response unit type (e.g., EMS, Traffic, or Fire)
-    \item EmergencyCall - this is the primary data table and used to store information about emergency calls received. It has several links to the above tables.
-\end{itemize}
+In order to better demonstrate and a feasible use-case for this dashboard, our group will create a mock-up of an application.
+The framework selected for this project was Django~\cite{django}---a Python object-relational mapping (ORM) framework.
+Django also has a wonderful API to many commonly used SQL databases which we plan to leverage by first drafting
+the tables as python classes and then migrating those classes to an actual database.
 
-In addition to the foreign key constraints between tables, indexes were added to each table to improve performance.
-Unique constraints were placed on fields in tables were duplication of data entry was not wanted.
-For example, we only wanted there to be a single entry for \"back pain\" in the Category table and only a single entry for \"EMS\" in the ResponseType table.
-The Township and ResponseUnit tables both had unique together constraints across two columns.
-In the case of the former, only a single entry for a combination of township name and state was desired and for the latter,
-only a single combination of response unit and station name was desired.
-Finally, Figure~\ref{fig:sqldiagram} presents a visual portrayal of the five above table and the relationships between them.
-
-
-\subsection{A Dashboard Application and Database}
-
-In order to better demonstrate and a feasible use-case for this dashboard, our group created a mock-up of an application.
-The framework selected for this project was Django~\cite{django}.
-This python framework is a Object-Relational Mapping (ORM) tool and supports fast-paced development.
-Furthermore, we were able to take advantage of the Django API to migrate changes to an actual database.
 For demonstration purposes, our group decided to use a simple sqlite database however the django framework itself is \"database agnostic\".
 Django also has some great packages for developing a REST API, specifically, we leveraged classes from the Django REST Framework~\cite{drf} package.
 
