@@ -62,8 +62,39 @@ These step can be viewed in our application's code \href{https://github.com/davj
 
 One of the challenges we will face in this endeavor is how to load information coming in from disparate data sources.
 We will address this by creating a Python class for handling, parsing and ingesting serialized emergency call data.
-A separate Parser class will have to be developed for each schema of incoming data.
+A separate Parser class will have to be developed for each type of incoming data that is anticipated.
+These parsers will be written as Python classes and stored in a file called
+\href{https://github.com/davjfish/WatspeedBigDataGroupProject/blob/main/application/dashboard/parsers.py}{parsers.py}
 
+The parser class called \texttt{PA911CSVParser} is what we developed to parse and ingest data that is structured like that found in the Pennsylvania dataset.
+The class has one obligatory initial argument called \texttt{file}, which is a BytesIO object held in memory.
+when the \texttt{parse()} method is called, the import sequence is then triggered.
+First, the data is read into a Pandas DataFrame and cleaned using the
+\href{https://github.com/davjfish/WatspeedBigDataGroupProject/blob/main/application/dashboard/parsers.py#L17}{following steps}:
+
+\begin{enumerate}
+    \item{
+        The response unit type (i.e., EMS, Traffic or Fire) is extracted from the title and stored in a separate column.
+        This is strait-forward because the response unit type is always prefixed in the record's title followed by a colon.
+    }
+    \item {
+        The incident category is extracted from the title and stored in a separate column.
+        This step is also pretty simple since the category of incident always proceeds the type.
+    }
+    \item {
+        If possible, find a station name in the record's description.
+        This is a more complicated step that involves the use of RegEx to detect the different ways in which the station name is provided.
+        An additional challenge for this step is that sometimes the description contained an address with a street name called \"Station Rd\".
+    }
+\end{enumerate}
+
+Next, we iterate through a unique list of all the townships in the data.
+Since we are not expecting there to be too many townships, it is safe to proceed item by item in the unique array.
+For each item, we strip trailing whitespace from the strings and convert them to uppercase in order to minimize the potential for duplicate entries.
+Then, we initialize a \texttt{Township} object and append it to a python list.
+At the end of that loop, we execute a bulk create query to add all the townships in a single transaction.
+Since there is a unique constraint on a Township's name and state, duplicate entries will be rejected.
+However, if we use the \texttt{INSERT or IGNORE} statement to the bulk create, the transaction will still be accepted.
 
 %
 %
