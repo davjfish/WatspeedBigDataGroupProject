@@ -19,8 +19,8 @@ The five resulting tables and their descriptions are as follows:
 Figure~\ref{fig:sqldiagram} presents a visual portrayal of the five above table and the relationships between them.
 In addition to the foreign key constraints between tables, indexes were added to each table to improve performance.
 Unique constraints were placed on fields in tables were duplication of data entry was not wanted.
-For example, we only wanted there to be a single entry for \"back pain\" in the Category table and only a single entry for \"EMS\" in the ResponseType table.
-The Township and ResponseUnit tables both had unique together constraints across two columns.
+For example, we only wanted there to be a single entry for "back pain" in the Category table and only a single entry for "EMS" in the \texttt{ResponseType} table.
+The Township and ResponseUnit tables both had unique-together constraints across two columns.
 In the case of the former, only a single entry for a combination of township name and state was desired and for the latter,
 only a single combination of response unit and station name was desired.
 Finally, the complete SQL definitions of the above tables and indices can be found in \hyperref[sec:app1]{Appendix 1}.
@@ -33,12 +33,12 @@ This confirms that our schema has indeed achieved greater storage efficiency tha
 
 The mockup of the Emergency Response Application can be viewed on the internet \href{https://dfishman.pythonanywhere.com/}{here}.
 The application is being hosted on the PythonAnywhere cloud with a free-tier account.
-While this is great for demonstration purposes, the free-tiered containers are low performant and thus very slow.
+While this is great for demonstration purposes, the free-tiered containers are very slow.
 The application has a landing page, a map, a data summary page and an administration page reserved for manually importing data.
-All of these pages are very basic and have the sole purpose of demonstrating a proof-of-concept.
+All of these pages are very basic and have the sole purpose of demonstrating the proof-of-concept.
 
 A screenshot of the map, which utilizes Leaflet, can be seen in Figure~\ref{fig:map}.
-Since there is a large number of calls in the database (>600,000), it would take too long to load this in a single call.
+Since there is a large number of calls in the database ($> 600,000$), it would take too long to load this in a single request.
 This will become even more pronounced overtime as additional data is accumulated.
 Therefore, using a paginated API endpoint is of paramount importance---allowing users to load data incrementally.
 In our application, the users can decide on how many records to load at a time
@@ -46,7 +46,7 @@ In our application, the users can decide on how many records to load at a time
 ~\href{https://github.com/davjfish/WatspeedBigDataGroupProject/blob/main/application/dashboard/paginators.py}{here}).
 Additionally, users can hone in on specific data by using filters which are then passed to the API endpoint as query parameters.
 For example, a GET request to
-~\href{https://dfishman.pythonanywhere.com//api/emergency-calls/?page_size=50&datetime__gte=2015-12-10&datetime__lte=2016-12-10&response_unit=27}{this endpoint}
+~\href{https://dfishman.pythonanywhere.com/api/emergency-calls/?page_size=50&datetime__gte=2015-12-10&datetime__lte=2016-12-10&response_unit=27}{this endpoint}
 would return a paginated JSON response of calls received between December 10, 2015 and December 10, 2016, and responded to by EMS Station 313A\@.
 
 In a similar vein, the dashboard models how a stakeholder can explore data summaries and statistics in real time.

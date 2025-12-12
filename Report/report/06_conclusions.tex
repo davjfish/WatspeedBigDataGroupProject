@@ -8,7 +8,7 @@ In this section, we will go through each of the challenges and outline our recom
 
 In this proof-of-concept, we demonstrated how a flat file, formated as tabular or serialized data (e.g., CSV or JSON), can be uploaded to a website through a
 customized site administration portal.
-However, in future applications, the dashboard application could have associated cron tasks that automatically connect to remote systems and
+However, in future applications, the dashboard application could have associated CRON tasks that automatically connect to remote systems and
 download new data.
 As noted in the previous section, each source schema would have to have their custom-made parser class.
 
@@ -19,7 +19,7 @@ An improvement to this system would be the introduction of asynchronousity.
 For example, once the flat file was uploaded, a new asynchronous thread could be started which then calls the appropriate parser class.
 Meanwhile, the end user can receive notifications about the progress (or lack thereof in the case of an error) or their import attempt.
 In the context of python and Django, Celery~\cite{celery} is a great tool for the implementation of asynchronous tasks.
-The use of a celery application would further require use of a messaging server such as Redis~\cite{redis}.
+The use of a celery application would further require use of a messaging service such as Redis~\cite{redis}.
 
 \subsection{Database Considerations for Production}
 The current proof-of-concept utilizes SQLite as the database engine for simplicity and ease of development.
@@ -42,9 +42,9 @@ To ensure the dashboard operates reliably under heavy load, specific architectur
         \textbf{Django Database Routers:}
         When using the Django framework, custom Database Routers can be implemented.
         The way to impliment this is very well described in the \href{https://docs.djangoproject.com/en/5.2/topics/db/multi-db/}{django docs}.
-        The code in the router will dictate which database instance should handle a specific query.
-        For example, all INSERT, UPDATE and DELETE operations are routed to the primary database, while all SELECT operations are routed to one of the replicas
-        at random---optimizing overall performance.
+        The routers are layers of code that determined which database instance should handle a specific query or transaction.
+        For example, all INSERT, UPDATE and DELETE operations are typically routed to the primary database, while all SELECT operations are
+        routed to one of the replicas at random---thereby optimizing the application's overall performance.
     }
 \end{enumerate}
 
