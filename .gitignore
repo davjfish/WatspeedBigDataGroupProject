@@ -7,3 +7,5 @@
 *.out
 Data Exploration/911.csv
 data/images/*.jpg
+.env
+.pyc

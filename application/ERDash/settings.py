@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
@@ -78,8 +80,25 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'mysql': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': config("DB_HOST", cast=str, default=""),
+        'PORT': 3306,
+        'NAME': config("DB_NAME", cast=str, default=""),
+        'USER': config("DB_USER", cast=str, default=""),
+        'PASSWORD': config("DB_PW", cast=str, default=""),
+        'OPTIONS': {
+            "charset": "utf8mb4",
+            'init_command': f'SET default_storage_engine=INNODB',
+        },
     }
 }
+
+use_mysql = config("USE_MYSQL", cast=bool, default=False)
+if use_mysql:
+    DATABASES['default'] = DATABASES['mysql']
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

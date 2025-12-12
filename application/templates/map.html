@@ -19,9 +19,9 @@
 {% endblock %}
 
 {% block body %}
-{#  <div class="text-start mb-3">#}
-{#    <a href="{% url 'index' %}" class="btn btn-primary">Back </a>#}
-{#  </div>#}
+  {#  <div class="text-start mb-3">#}
+  {#    <a href="{% url 'index' %}" class="btn btn-primary">Back </a>#}
+  {#  </div>#}
 
   <div id="app" v-cloak>
     <div v-if="initialLoading" class="text-center">
@@ -57,7 +57,7 @@
         </div>
         <div class="col text-end">
           <div class="form-inline">
-            <label for="page_size">Results to load:</label> <input id="page_size" type="number" v-model="pageSize" class=" " style="width: 5rem;">
+            <label for="page_size">Results to load:</label> <input id="page_size" type="number" v-model="pageSize" class=" " style="width: 5rem;" @change="calls=[];next=getCallsEndpoint()">
           </div>
         </div>
       </div>
@@ -176,7 +176,6 @@
       },
       loadMore() {
         this.moreLoading = true;
-        console.log(this.next)
         fetch(this.next)
             .then(response => response.json())
             .then(data => {
