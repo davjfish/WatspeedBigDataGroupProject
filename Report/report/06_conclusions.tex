@@ -1,8 +1,77 @@
 \section{Conclusions}
 
-% \subsection{Conclusion subsection... if needed ?}
+This project helped us develop an appreciation of the types of challenges that developers and data analysts face when
+attempting to integrate large dataset from disparate sources.
+In this section, we will go through each of the challenges and outline our recommendations based on this work.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\subsection{Data Acquision and Integration}
+
+In this proof-of-concept, we demonstrated how a flat file, formated as tabular or serialized data (e.g., CSV or JSON), can be uploaded to a website through a
+customized site administration portal.
+However, in future applications, the dashboard application could have associated cron tasks that automatically connect to remote systems and
+download new data.
+As noted in the previous section, each source schema would have to have their custom-made parser class.
+
+A challenge that was faced when importing data via an HTML form is that large datasets take a long time to process.
+Modern-day web users do not want to wait several minutes for a form to submit.
+Furthermore, large HTTP requests like this can bind up the web server.
+An improvement to this system would be the introduction of asynchronousity.
+For example, once the flat file was uploaded, a new asynchronous thread could be started which then calls the appropriate parser class.
+Meanwhile, the end user can receive notifications about the progress (or lack thereof in the case of an error) or their import attempt.
+In the context of python and Django, Celery~\cite{celery} is a great tool for the implementation of asynchronous tasks.
+The use of a celery application would further require use of a messaging server such as Redis~\cite{redis}.
+
+\subsection{Database Considerations for Production}
+The current proof-of-concept utilizes SQLite as the database engine for simplicity and ease of development.
+SQLite is an excellent choice for testing, and local development however, it presents significant limitations when
+transitioning to a full production environment that demands concurrent access, robust performance, and scalability.
+
+In a production system, we recommend transitioning to an enterprise-grade relational database management system.
+Given the geographic information systems (GIS) component of this project,we think PostgreSQL would be a great fit.
+To ensure the dashboard operates reliably under heavy load, specific architectural approaches must be implemented:
+
+\begin{enumerate}
+    \item{
+        \textbf{Database Replicas and Horizontal Scaling:}
+        The production setup should utilize database replication.
+        A "primary" instance handles all write operations, while one or more "replica" instances handle data-intensive read operations
+        (e.g., loading dashboard visualizations and running historical reports).
+        This horizontally scales the system's ability to serve data quickly.
+    }
+    \item{
+        \textbf{Django Database Routers:}
+        When using the Django framework, custom Database Routers can be implemented.
+        The way to impliment this is very well described in the \href{https://docs.djangoproject.com/en/5.2/topics/db/multi-db/}{django docs}.
+        The code in the router will dictate which database instance should handle a specific query.
+        For example, all INSERT, UPDATE and DELETE operations are routed to the primary database, while all SELECT operations are routed to one of the replicas
+        at random---optimizing overall performance.
+    }
+\end{enumerate}
+
+While the current emergency call log data is highly structured and well-suited for a relational model,
+there may be room for NoSQL databases in a more advanced application:
+
+\begin{itemize}
+    \item{
+        Real-time Logging and Telemetry: NoSQL databases like MongoDB could efficiently manage high-volume, unstructured data streams such as real-time
+        GPS location updates from emergency vehicles or operational telemetry logs, where the schema might evolve rapidly.
+    }
+    \item{
+        Caching: A NoSQL store (e.g., Redis) is an excellent caching layer for frequently accessed dashboard metrics, reducing the load on the primary
+        RDBMS and ensuring rapid dashboard loading times.
+    }
+\end{itemize}
+
+The decision for the primary data store remains RDBMS, but a hybrid approach using NoSQL for specific,
+high-velocity data points offers a path for future optimization.
+%
+%\subsection{Web Application User Permissions}
+%
+%
+%- would need classes of users and to handle permissions on the different types of views
+%- metadata fields such as \texttt{created\_at} and \texttt{created\_by}
+%
+%\subsection{REST API Development}
+%
+%it would probably make sense to put a lot of investment in the rest api to maximize interoperability between systems
+%

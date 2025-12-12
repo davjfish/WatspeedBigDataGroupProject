@@ -2,30 +2,30 @@
 
 
 {% block page_title %}
-  <div class="bg-primary text-white p-3 h1">
-    Welcome to the Emergency Response Dashboard
-  </div>
+<div class="bg-primary text-white p-3 h1">
+  Welcome to the Emergency Response Dashboard
+</div>
 {% endblock %}
 
 {% block body %}
 
-  <h3>
-    What would you like to do?
-  </h3>
-  <ul>
-    <li><a href="{% url 'map' %}">View Map</a></li>
-    <li><a href="{% url 'charts' %}">Summary of Data</a></li>
-    <li><a href="{% url 'admin' %}">Admin Page</a></li>
-  </ul>
+<h2 class="mb-5">
+  What would you like to do?
+</h2>
+
+<div class="mb-3 lead"><a href="{% url 'map' %}">View Map</a></div>
+<div class="mb-3 lead"><a href="{% url 'charts' %}">Summary of Data</a></div>
+<div class="mb-3 lead"><a href="{% url 'admin' %}">Import Data</a></div>
+
 {% endblock %}
 
 {% block page_footer %}
-  <div class="alert alert-secondary">
-    <small>
-      Data source:
-      <a href="https://www.kaggle.com/datasets/mchirico/montcoalert?resource=download&select=911.csv">https://www.kaggle.com/datasets/mchirico/montcoalert?resource=download&select=911.csv</a>
-    </small>
-  </div>
+<div class="alert alert-secondary">
+  <small>
+    Prepared by Group 2 - Big Data Management Systems and Tools - WatSpeed University of Waterloo
+  </small>
+</div>
 {% endblock %}
+
 
 

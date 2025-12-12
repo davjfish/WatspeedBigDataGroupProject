@@ -1,0 +1,49 @@
+\begin{thebibliography}{10}
+
+\bibitem{celery}
+{Celery - Distributed Task Queue}.
+\newblock \url{https://docs.celeryq.dev/en/stable/}.
+
+\bibitem{charts}
+{Chart.js — Simple yet flexible JavaScript charting library for the modern
+  web. }.
+\newblock \url{https://www.chartjs.org/}.
+
+\bibitem{leaflet}
+{Leaflet—A JavaScript Library for Interactive Maps.}
+\newblock \url{https://leafletjs.com/}.
+
+\bibitem{redis}
+{Redis Messaging Service}.
+\newblock \url{https://redis.io/solutions/messaging/}.
+
+\bibitem{sqlite}
+{SQLite}.
+\newblock \url{https://sqlite.org/}.
+
+\bibitem{vue}
+{Vue.JS - The Progressive JavaScript Framework}.
+\newblock \url{https://vuejs.org/}.
+
+\bibitem{mike_chirico_2020}
+Mike Chirico.
+\newblock Emergency - 911 calls.
+\newblock \url{https://www.kaggle.com/dsv/1381403}, 2020.
+
+\bibitem{django}
+{Django Software Foundation}.
+\newblock Django.
+\newblock \url{https://djangoproject.com}.
+
+\bibitem{drf}
+{Encode (main developer Tom Christie) and contributors}.
+\newblock {Django REST framework}.
+\newblock \url{https://www.django-rest-framework.org/}.
+
+\bibitem{pandas}
+NumFOCUS.
+\newblock pandas.
+\newblock \url{https://pandas.pydata.org/pandas-docs/stable/index.html}, 2023.
+\newblock Accessed on 2023-12-11.
+
+\end{thebibliography}

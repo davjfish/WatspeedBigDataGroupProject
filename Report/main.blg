@@ -1,0 +1,75 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: report/00_title_page.aux
+A level-1 auxiliary file: report/03_objectives.aux
+A level-1 auxiliary file: report/04_methods.aux
+A level-1 auxiliary file: report/05_results.aux
+A level-1 auxiliary file: report/06_conclusions.aux
+A level-1 auxiliary file: report/07_appendix_1.aux
+The style file: plain.bst
+Database file #1: refs.bib
+Warning--entry type for "django" isn't style-file defined
+--line 18 of file refs.bib
+Warning--entry type for "drf" isn't style-file defined
+--line 26 of file refs.bib
+Warning--entry type for "vue" isn't style-file defined
+--line 33 of file refs.bib
+Warning--entry type for "leaflet" isn't style-file defined
+--line 40 of file refs.bib
+Warning--entry type for "charts" isn't style-file defined
+--line 46 of file refs.bib
+Warning--entry type for "sqlite" isn't style-file defined
+--line 52 of file refs.bib
+Warning--entry type for "celery" isn't style-file defined
+--line 57 of file refs.bib
+Warning--entry type for "redis" isn't style-file defined
+--line 62 of file refs.bib
+Warning--to sort, need author or key in sqlite
+Warning--to sort, need author or key in vue
+Warning--to sort, need author or key in leaflet
+Warning--to sort, need author or key in charts
+Warning--to sort, need author or key in celery
+Warning--to sort, need author or key in redis
+You've used 10 entries,
+            2118 wiz_defined-function locations,
+            540 strings with 4995 characters,
+and the built_in function-call counts, 1809 in all, are:
+= -- 170
+> -- 34
+< -- 0
++ -- 18
+- -- 8
+* -- 54
+:= -- 253
+add.period$ -- 25
+call.type$ -- 10
+change.case$ -- 34
+chr.to.int$ -- 0
+cite$ -- 16
+duplicate$ -- 70
+empty$ -- 227
+format.name$ -- 8
+if$ -- 425
+int.to.chr$ -- 0
+int.to.str$ -- 10
+missing$ -- 0
+newline$ -- 48
+num.names$ -- 8
+pop$ -- 80
+preamble$ -- 1
+purify$ -- 24
+quote$ -- 0
+skip$ -- 76
+stack$ -- 0
+substring$ -- 50
+swap$ -- 10
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 40
+warning$ -- 6
+while$ -- 8
+width$ -- 12
+write$ -- 84
+(There were 14 warnings)

@@ -1,38 +1,39 @@
 
 \section{Objectives}
 
-Here is a citation  (e.g., ~\cite{pandas})
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-\subsection{Develop a SQL Db...}
-
-Here is a figure (Figure~\ref{fig:exampleImage}).
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-\begin{itemize}
-    \item Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    \item Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-    \item Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-\end{itemize}
-
 \subsection{Rationale behind the analysis}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Effective emergency response is paramount to public safety, yet emergency services are often collected and monitored by disparate systems.
+Understanding trends and patterns across different jurisdictions and agencies can help
+decision-makers and public administrators make better decision about city planning, coordination, resource allocation and response optimization.
+The challenge that this project is addressing is converting a high volume of raw, unstructured call data,
+such as that depicted in \href{https://www.kaggle.com/dsv/1381403}{this dataset}, into meaningful, operational intelligence.
+
+In this project, we will discuss different approaches for the aggregation, and storage of these data and will
+outline some approaches for ways these data can be disseminated with stakeholders and administrators.
+
+
+\subsection{Structured Data in a SQL Database}
+
+Storing the emergency response data in a relational database offers several critical advantages for building an effective and reliable dashboard.
+The primary rationale is centered on data integrity, efficient analysis, and compatibility with standard business intelligence tools, specifically,
+web and mobile applications that stakeholders will want to use to view and interact with the data.
+
+There are several key reasons why a SQL database is an appropriate choice for this project.
+First, most emergency call data will have a predicable and well-structured format,
+e.g., incident type, timestamp, location (zip code, township), latitude and longitude.
+Data from which these basic attributes cannot be extracted are going to be less useful to stakeholders.
+Next, data organized into a relational database can be stored much more effectively than a two-dimensional dataframe
+(assuming a well-designed schema and sufficient normalization).
+A relational database management system (RDBMS) will also give administrators the ability to implement constraints in order to maximize data integrity.
+This includes adding lookup tables (i.e, foreign key constraints) and enforcing uniqueness, either within a column
+(e.g., should only have a single entry for a zipcode in a ZipCode table) or between columns
+(e.g., combinations of \texttt{city}, \texttt{state} and \texttt{country} should be unique in an AdministrativeArea table).
+
+Finally, a SQL database is highly compatible with REST APIs, and the two technologies are commonly used together in modern application architecture.
+A REST API would allow for the implementation of reactive tools for viewing and interacting with the data across a variety of platforms,
+such as browsers, alert-systems or mobile applications.
+
 
 \pagebreak
 
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{Call911.jpg}
-    \caption{An example image for our project.}
-    \label{fig:exampleImage}
-\end{figure}

@@ -144,7 +144,7 @@
         map: null,
         ptGroup: null,
         ptBounds: null,
-        pageSize: 250,
+        pageSize: 50,
         filter: {
           datetime__gte: dateRange[0],
           datetime__lte: dateRange[1],
@@ -176,6 +176,7 @@
       },
       loadMore() {
         this.moreLoading = true;
+        console.log(this.next)
         fetch(this.next)
             .then(response => response.json())
             .then(data => {

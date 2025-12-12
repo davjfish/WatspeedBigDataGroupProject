@@ -1,0 +1,45 @@
+\section{Methods}
+
+\subsection{Designing a Relational Database Schema}
+
+The principle dataset used for the project was sourced from Montgomery County, Pennsylvania and is accessible
+\href{https://www.kaggle.com/dsv/1381403}{here}~\cite{mike_chirico_2020}.
+This structured, tabular dataset is provided as a flat CSV file and consists of over 600,000 records of emergency calls from December 2015 to April 2020.
+This dataset will be used to create an outline of the database schema that will be used to store the dashboard data.
+In order to achieve this, We will explore the dataset by importing it into a dataframe and inspect the data types being stored in each column.
+Subsequently, we will decide on the best way to separate the data into discrete tables.
+In addition to foreign key and uniqueness constraints, we will ensure the strategic implementation of database indexes in order to optimize database performance.
+Finally, for the sake of demonstration, we decided to utilize a simple SQLite database~\cite{sqlite}.
+
+\subsection{Dashboard REST API and Application}
+
+In order to provide stakeholders with a concrete vision of our dashboard, our group will create a mock-up of this application.
+The framework selected to do this was Django~\cite{django}---a Python object-relational mapping (ORM) web framework.
+Django also has a wonderful built-in API for working with the most common types of relation database management systems.
+This is great because the tables can be drafted as database-agnostic models and migrated to different systems in different environments.
+
+Additionally, Django also has some great external packages for developing a REST API\@.
+In particular, the Django REST Framework~\cite{drf} will be used to define endpoints that will be used for acquiring data from the application.
+This framework provides a quick and effective way of serializing the Django models (i.e., database tables) into a JSON response as well as
+writing incoming serialized data to the database.
+
+On the frontend of the application, we will use a combination of HTML, the Django templating language and JavaScript to present end-users with
+information from the dashboard.
+In particular, the JavaScript library Vue.js~\cite{vue} will be important in providing users with a reactive, modern experience.
+Aside from Vue.js, we will also utilize Leaflet~\cite{leaflet} and Charts.js~\cite{charts} for mapping and reactive graphing, respectively.
+The mock application will be hosted in on a free-tier cloud platform in order to illicit feedback from stakeholders.
+
+\subsection{Data Ingestion}
+
+One of the challenges we will face in this endeavor is how to load information coming in from disparate data sources.
+We will address this by creating a Python class for handling, parsing and ingesting serialized emergency call data.
+A separate Parser class will have to be developed for each schema of incoming data.
+
+\subsection{Code Repository}
+
+All the code for this report and for the application will be stored in a publicly accessible git repository on
+\href{https://github.com/davjfish/WatspeedBigDataGroupProject/}{GitHub}.
+
+
+\pagebreak
+
