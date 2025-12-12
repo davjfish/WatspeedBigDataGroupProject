@@ -14,8 +14,8 @@
 \newblock \url{https://leafletjs.com/}.
 
 \bibitem{redis}
-{Redis}.
-\newblock \url{https://redis.io/}.
+{Redis Messaging Service}.
+\newblock \url{https://redis.io/solutions/messaging/}.
 
 \bibitem{sqlite}
 {SQLite}.

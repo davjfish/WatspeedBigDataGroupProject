@@ -33,7 +33,7 @@ Warning--to sort, need author or key in celery
 Warning--to sort, need author or key in redis
 You've used 10 entries,
             2118 wiz_defined-function locations,
-            540 strings with 4957 characters,
+            540 strings with 4995 characters,
 and the built_in function-call counts, 1809 in all, are:
 = -- 170
 > -- 34

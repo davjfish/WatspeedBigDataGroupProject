@@ -21,58 +21,57 @@ Meanwhile, the end user can receive notifications about the progress (or lack th
 In the context of python and Django, Celery~\cite{celery} is a great tool for the implementation of asynchronous tasks.
 The use of a celery application would further require use of a messaging server such as Redis~\cite{redis}.
 
-\subsection{Production Database Considerations}
+\subsection{Database Considerations for Production}
 The current proof-of-concept utilizes SQLite as the database engine for simplicity and ease of development.
-SQLite is an excellent choice for embedded systems, testing, and local development due to its serverless architecture and low overhead.
-However, it presents significant limitations when transitioning to a full production environment that demands concurrent access, robust performance, and scalability.
-%
-%Rationale for Transitioning to a Production-Ready Database
-%For a production environment handling critical emergency response data, the following requirements dictate a move away from SQLite:
-%\begin{itemize}
-%\item Concurrency: SQLite locks the entire database file during writes, which is unsuitable for a dashboard where multiple users (dispatchers, administrators, analysts) need simultaneous read and write access.
-%\item Scalability and Performance: Production systems require a database that can leverage multi-core servers, manage high transaction volumes efficiently, and support complex, high-speed querying.
-%\item Networking Protocol: SQLite operates locally on a file system, whereas production systems require a client-server architecture to provide network access to the data securely.
-%\end{itemize}
-%\subsubsection{Recommended Production Database Systems}
+SQLite is an excellent choice for testing, and local development however, it presents significant limitations when
+transitioning to a full production environment that demands concurrent access, robust performance, and scalability.
 
-In a production system, we recommend transitioning to a robust, enterprise-grade relational database management system (RDBMS).
-Given the geographic information systems (GIS) component of this project, PostgreSQL would be a great fit.
+In a production system, we recommend transitioning to an enterprise-grade relational database management system.
+Given the geographic information systems (GIS) component of this project,we think PostgreSQL would be a great fit.
 To ensure the dashboard operates reliably under heavy load, specific architectural approaches must be implemented:
+
 \begin{enumerate}
-\item{
-    \textbf{Database Replicas and Horizontal Scaling:}
-    The production setup should utilize database replication.
-    A "primary" instance handles all write operations, while one or more "replica" instances handle data-intensive read operations
-    (e.g., loading dashboard visualizations and running historical reports).
-    This horizontally scales the system's ability to serve data quickly.
-}
-\item{
-    \textbf{Django Database Routers:}
-    When using the Django framework, a custom Database Router can be implemented.
-    This logic layer dictates which database instance should handle a specific query.
-    For example, all INSERT operations are routed to the primary database, while all SELECT operations are routed to an available replica,
-    optimizing overall performance.
-}
+    \item{
+        \textbf{Database Replicas and Horizontal Scaling:}
+        The production setup should utilize database replication.
+        A "primary" instance handles all write operations, while one or more "replica" instances handle data-intensive read operations
+        (e.g., loading dashboard visualizations and running historical reports).
+        This horizontally scales the system's ability to serve data quickly.
+    }
+    \item{
+        \textbf{Django Database Routers:}
+        When using the Django framework, custom Database Routers can be implemented.
+        The way to impliment this is very well described in the \href{https://docs.djangoproject.com/en/5.2/topics/db/multi-db/}{django docs}.
+        The code in the router will dictate which database instance should handle a specific query.
+        For example, all INSERT, UPDATE and DELETE operations are routed to the primary database, while all SELECT operations are routed to one of the replicas
+        at random---optimizing overall performance.
+    }
 \end{enumerate}
 
-While the current emergency call log data is highly structured and well-suited for a relational model, there may be room for NoSQL databases in a more advanced application:
+While the current emergency call log data is highly structured and well-suited for a relational model,
+there may be room for NoSQL databases in a more advanced application:
 
 \begin{itemize}
-\item Real-time Logging and Telemetry: NoSQL databases (like MongoDB or Redis) could efficiently manage high-volume, unstructured data streams such as real-time GPS location updates from emergency vehicles or operational telemetry logs, where the schema might evolve rapidly.
-\item Caching: A NoSQL store (e.g., Redis) is an excellent caching layer for frequently accessed dashboard metrics, reducing the load on the primary RDBMS and ensuring rapid dashboard loading times.
+    \item{
+        Real-time Logging and Telemetry: NoSQL databases like MongoDB could efficiently manage high-volume, unstructured data streams such as real-time
+        GPS location updates from emergency vehicles or operational telemetry logs, where the schema might evolve rapidly.
+    }
+    \item{
+        Caching: A NoSQL store (e.g., Redis) is an excellent caching layer for frequently accessed dashboard metrics, reducing the load on the primary
+        RDBMS and ensuring rapid dashboard loading times.
+    }
 \end{itemize}
 
 The decision for the primary data store remains RDBMS, but a hybrid approach using NoSQL for specific,
 high-velocity data points offers a path for future optimization.
-
-
-
-\subsection{Web Application User Permissions}
-
-- would need classes of users and to handle permissions on the different types of views
-- metadata fields such as \texttt{created\_at} and \texttt{created\_by}
-
-\subsection{REST API Development}
-
-it would probably make sense to put a lot of investment in the rest api to maximize interoperability between systems
-
+%
+%\subsection{Web Application User Permissions}
+%
+%
+%- would need classes of users and to handle permissions on the different types of views
+%- metadata fields such as \texttt{created\_at} and \texttt{created\_by}
+%
+%\subsection{REST API Development}
+%
+%it would probably make sense to put a lot of investment in the rest api to maximize interoperability between systems
+%
