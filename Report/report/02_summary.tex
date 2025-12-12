@@ -1,37 +1,28 @@
 \section{Summary}
 
-Some notes about our objectives.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+This project explores how large volumes of emergency response data can be transformed from tabular CSV logs into reliable operational intelligence
+for public safety planner and other stakeholders.
+Emergency call information is often fragmented across jurisdictions and systems,
+making it difficult to identify trends, coordinate resources, and support data-driven decision-making.
+To address this, the project evaluates approaches for structuring, aggregating, and disseminating emergency call data through a relational database,
+a REST-based application interface, and a mock emergency response dashboard.
 
-\subsection{Data source and Preparation}
+A key focus of the work is the design and implementation of a SQL database schema capable of storing emergency call data
+efficiently and with strong data integrity guarantees.
+Using a structured dataset from Montgomery County, PA (containing over 600,000 records), the project develops a
+normalized five-table schema that incorporates foreign keys, uniqueness constraints, and targeted indexing.
+This schema reduces storage requirements relative to the raw CSV and provides a foundation compatible with modern business intelligence tools and
+application frameworks.
 
-Here is how we reference images (Figure~\ref{fig:exampleImage}).
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Building on the database layer, the project implements a mock dashboard application using Django and the Django REST Framework.
+The application provides data access through paginated and filterable API endpoints and integrates frontend components such as Vue.js, Leaflet, and Charts.js
+to deliver an interactive user experience.
+Example features include a map for visualizing call locations, a summary page for real-time aggregations, and an administration portal for uploading CSV data.
+The project emphasizes the need for paginated queries and aggregation endpoints to ensure responsiveness when dealing with hundreds of thousands of records.
 
-\subsection{Analysis}
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-\subsection{Conclusions}
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{Call911.jpg}
-    \caption{An example image for our project.}
-    \label{fig:exampleImage}
-\end{figure}
+The project concludes with recommendations for production-scale adoption.
+Future systems should integrate asynchronous task processing (e.g., Celery with Redis) to avoid long-running import operations on the main application thread.
+Additionally, the proof-of-concept SQLite backend should be replaced with a more robust system such as PostgreSQL,
+ideally with read replicas and Django Database Routers to support high-volume analytical queries.
+Overall, the project demonstrates a complete end-to-end pipeline for transforming emergency call logs into structured,
+analyzable, and operationally useful data.
