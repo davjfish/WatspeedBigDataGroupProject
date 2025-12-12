@@ -83,7 +83,6 @@ DATABASES = {
     },
     'mysql': {
         'ENGINE': 'django.db.backends.mysql',
-        'TIME_ZONE': 'UTC',
         'HOST': config("DB_HOST", cast=str, default=""),
         'PORT': 3306,
         'NAME': config("DB_NAME", cast=str, default=""),
