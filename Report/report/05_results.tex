@@ -110,7 +110,7 @@ Instead, we will leverage parallel processing by using the Pandas DataFrame appl
 We start by defining a protected-member method called \texttt{\_make\_call\_from\_row} that assembles an \texttt{EmergencyCall} object from a row in the dataframe
 and appending it to a list.
 Then, just as above we will execute a SQL bulk create query to write all the objects to the database.
-Running the parser locally on a standard desktop computer takes about 1\-2 minutes to ingest over 600K records.
+Running the parser locally on a standard desktop computer takes about 1 to 2 minutes to ingest over 600K records.
 
 The nice thing about creating a parser class, as opposed to a mere function, is that it can be cleanly instantiated in different parts of the code.
 In our demonstration, we create a form for site administrators to upload a CSV and to specify a data format.
